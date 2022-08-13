@@ -1,4 +1,4 @@
-package served
+package main
 
 func main() {
 
