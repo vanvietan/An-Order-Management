@@ -1,10 +1,11 @@
 package model
 
 import (
-	"github.com/sony/sonyflake"
 	"math/rand"
 	"sync"
 	"time"
+
+	"github.com/sony/sonyflake"
 )
 
 var sf *sonyflake.Sonyflake
@@ -13,6 +14,7 @@ var rg = struct {
 	sync.Mutex
 	rand *rand.Rand
 }{
+
 	rand: rand.New(rand.NewSource(time.Now().UnixNano())),
 }
 
