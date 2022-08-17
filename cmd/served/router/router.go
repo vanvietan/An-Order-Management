@@ -1,9 +1,14 @@
 package router
 
 import (
-	"database/sql"
 	"fmt"
+	"time"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
+
+var dbConn *gorm.DB
 
 const (
 	user     = "postgres"
@@ -13,19 +18,32 @@ const (
 	host     = "localhost"
 )
 
-func OpenConnection() *sql.DB {
+func OpenConnection() error {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user =%s "+
 		"password=%s dbname=%s ssdmode=disable",
 		host, port, user, password, dbname)
-	db, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
-		panic(err)
-	}
-	err = db.Ping()
-	if err != nil {
-		panic(err)
-	}
 
+	db, err := gorm.Open(postgres.Open(psqlInfo), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println("Database Connected!")
-	return db
+
+	//create the connection pool
+	sqlDB, err := db.DB()
+
+	sqlDB.SetConnMaxIdleTime(time.Minute * 5)
+
+	// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+	sqlDB.SetMaxIdleConns(10)
+
+	// SetMaxOpenConns sets the maximum number of open connections to the database.
+	sqlDB.SetMaxOpenConns(100)
+
+	// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+	sqlDB.SetConnMaxLifetime(time.Hour)
+
+	dbConn = db
+
+	return err
 }

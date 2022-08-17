@@ -1,6 +1,3 @@
-drop table if exists "order";
-drop table if exists "users";
-drop table if exists "history";
 
 CREATE TABLE "order" (
   "id" int PRIMARY KEY,

@@ -8,20 +8,20 @@ import (
 
 type Order struct {
 	gorm.Model
-	Id            uint         `json:"id"`
-	Name          string       `json:"name"`
-	Description   string       `json:"description"`
-	TotalPrice    int32        `json:"totalPrice"`
-	Quantity      int          `json:"quantity"`
-	Discount      int8         `json:"discount"`
-	Shipping      string       `json:"shipping"`
-	Status        int          `json:"status"` // Enums Status
-	UserId        uint         `json:"userId"`
-	DatePurchased time.Weekday `json:"datePurchased"`
-	CreatedAt     time.Time    `json:"createdAt"`
-	UpdatedAt     time.Time    `json:"updatedAt"`
-	DeletedAt     time.Time    `json:"deletedAt"`
-	Histories     []History    `gorm:"foreignKey:OrderId"`
+	Id            uint           `json:"id"`
+	Name          string         `json:"name"`
+	Description   string         `json:"description"`
+	TotalPrice    int32          `json:"totalPrice"`
+	Quantity      int            `json:"quantity"`
+	Discount      int8           `json:"discount"`
+	Shipping      string         `json:"shipping"`
+	Status        int            `json:"status"` // Enums Status
+	UserId        uint           `json:"userId"`
+	DatePurchased time.Weekday   `json:"datePurchased"`
+	CreatedAt     time.Time      `json:"created_at" `
+	UpdatedAt     time.Time      `json:"updatedAt"`
+	DeletedAt     gorm.DeletedAt `json:"deletedAt"`
+	Histories     []History      `gorm:"foreignKey:OrderId;references:Id"`
 }
 
 type Users struct {
@@ -36,8 +36,8 @@ type Users struct {
 	Role        string    `json:"role"` //Enums Role
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updatedAt"`
-	Orders      []Order   `gorm:"foreignKey:UserId"`
-	Histories   []History `gorm:"foreignKey:UserId"`
+	Orders      []Order   `gorm:"foreignKey:UserId;references:Id"`
+	Histories   []History `gorm:"foreignKey:UserId;references:Id"`
 }
 
 type History struct {
