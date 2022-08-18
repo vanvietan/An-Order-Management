@@ -1,3 +1,3 @@
-drop table if exists "order";
-drop table if exists "users";
-drop table if exists "history";
+drop table if exists audit_trail;
+drop table if exists orders;
+drop table if exists users;
