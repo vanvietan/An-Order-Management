@@ -1,4 +1,4 @@
-package router
+package db
 
 import (
 	"fmt"
@@ -18,19 +18,23 @@ const (
 	host     = "localhost"
 )
 
-func OpenConnection() error {
+func CreateDatabaseConnection() error {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user =%s "+
 		"password=%s dbname=%s ssdmode=disable",
 		host, port, user, password, dbname)
 
 	db, err := gorm.Open(postgres.Open(psqlInfo), &gorm.Config{})
 	if err != nil {
-		panic(err)
+		return err
 	}
+
 	fmt.Println("Database Connected!")
 
-	//create the connection pool
+	// create the connection pool
 	sqlDB, err := db.DB()
+	if err != nil {
+		return err
+	}
 
 	sqlDB.SetConnMaxIdleTime(time.Minute * 5)
 
@@ -45,5 +49,16 @@ func OpenConnection() error {
 
 	dbConn = db
 
-	return err
+	return nil
+}
+
+func GetDatabaseConnection() (*gorm.DB, error) {
+	sqlDB, err := dbConn.DB()
+	if err != nil {
+		return dbConn, err
+	}
+	if err := sqlDB.Ping(); err != nil {
+		return dbConn, err
+	}
+	return dbConn, nil
 }

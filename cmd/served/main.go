@@ -11,6 +11,15 @@ func main() {
 	port := ":3000"
 	r := chi.NewRouter()
 
+	/*
+		init repository
+		init service
+		init controller
+
+		init router
+		request -> router (middleware handle) -> GET /order -> controller -> Service -> repository -> DB
+		Create DB connection -> repository -> Service -> controller -> Router
+	*/
 	//Get
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Welcome"))
