@@ -6,7 +6,6 @@ RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 
 # Add Maintainer Info
-# LABEL maintainer="Hao Nguyen <hao.nguyen@s3corp.com.vn>"
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
