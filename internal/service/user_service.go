@@ -1,5 +1,14 @@
 package service
 
-func GetAllUsers() {
+import (
+	myUser "order-mg/internal/model"
+)
 
+type user = myUser.Users
+
+var userDTO myUser.Users
+
+func GetAllUsers() user {
+
+	return userDTO
 }
