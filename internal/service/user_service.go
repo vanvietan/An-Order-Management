@@ -10,5 +10,7 @@ var userDTO myUser.Users
 
 func GetAllUsers() user {
 
+	// repository.GetAllUsers()
+
 	return userDTO
 }
