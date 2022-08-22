@@ -20,7 +20,7 @@ const (
 
 func CreateDatabaseConnection() error {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user =%s "+
-		"password=%s dbname=%s ssdmode=disable",
+		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 
 	db, err := gorm.Open(postgres.Open(psqlInfo), &gorm.Config{})
@@ -61,4 +61,11 @@ func GetDatabaseConnection() (*gorm.DB, error) {
 		return dbConn, err
 	}
 	return dbConn, nil
+}
+
+func CreateDBConnection() (*gorm.DB, error) {
+	if err := CreateDatabaseConnection(); err != nil {
+		return nil, err
+	}
+	return GetDatabaseConnection()
 }

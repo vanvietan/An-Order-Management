@@ -7,8 +7,11 @@ import (
 
 func GetAllUsers() {
 
-	var listUser []model.Users
+	listUsers := []model.Users{}
 
-	db.GetDatabaseConnection()
+	dbConn, _ := db.GetDatabaseConnection()
+
+	dbConn.Find(&listUsers)
+	// return listUsers
 
 }

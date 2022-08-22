@@ -11,18 +11,19 @@ var router *chi.Mux
 
 func routers() *chi.Mux {
 	router.Get("/users", GetAllUsers)
-	router.Get("/users/{id}", GetUser)
+	router.Get("/users/{id}", GetUserById)
 	router.Post("/users/", CreateUser)
 	router.Put("/users/{id}", UpdateUser)
 	router.Delete("/users/{id}", DeleteUser)
 	return router
 }
 
+// Get all users
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	service.GetAllUsers()
 }
 
-func GetUser(w http.ResponseWriter, r *http.Request) {
+func GetUserById(w http.ResponseWriter, r *http.Request) {
 
 }
 
