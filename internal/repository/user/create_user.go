@@ -8,13 +8,18 @@ import (
 )
 
 // CreateUser create a user
-func (i impl) CreateUser(ctx context.Context, user *model.Users) error {
+func (i impl) CreateUser(ctx context.Context, user *model.Users) (model.Users, error) {
 	var tx *gorm.DB
-	if user.Username != "" {
-		tx = i.gormDB.Select("Name", "Username", "Password", "PhoneNumber", "Address", "Age", "Role").Create(&user)
+	if user.Username == "" {
+		return model.Users{}, tx.Error
+	} else if user.Password == "" {
+		return model.Users{}, tx.Error
+	} else {
+		tx = i.gormDB.Select("Id", "Name", "Username", "Password", "PhoneNumber", "Address",
+			"Age", "Role", "CreatedAt", "UpdatedAt").Create(&user)
 	}
 	if tx.Error != nil {
-		return tx.Error
+		return model.Users{}, tx.Error
 	}
-	return nil
+	return *user, nil
 }
