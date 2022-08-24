@@ -9,7 +9,7 @@ import (
 // UserService: handle all user service busineess
 type UserService interface {
 	//GetUsers get all users
-	GetUsers(ctx context.Context, limit int, lastID int64) (error, []model.Users)
+	GetUsers(ctx context.Context, limit int, lastID int64) ([]model.Users, error)
 }
 type impl struct {
 	userRepo user.UserRepository
