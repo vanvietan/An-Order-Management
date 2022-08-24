@@ -13,7 +13,7 @@ type UserRepository interface {
 	GetUsers(ctx context.Context, limit int, lastID int64) ([]model.Users, error)
 
 	//CreateUser create a user
-	CreateUser(ctx context.Context) (error, model.Users)
+	CreateUser(ctx context.Context, user model.Users) (model.Users, error)
 }
 
 type impl struct {

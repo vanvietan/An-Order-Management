@@ -8,7 +8,7 @@ import (
 )
 
 // CreateUser create a user
-func (i impl) CreateUser(ctx context.Context, user *model.Users) (model.Users, error) {
+func (i impl) CreateUser(ctx context.Context, user model.Users) (model.Users, error) {
 	var tx *gorm.DB
 	if user.Username == "" {
 		return model.Users{}, tx.Error
@@ -21,5 +21,5 @@ func (i impl) CreateUser(ctx context.Context, user *model.Users) (model.Users, e
 	if tx.Error != nil {
 		return model.Users{}, tx.Error
 	}
-	return *user, nil
+	return user, nil
 }
