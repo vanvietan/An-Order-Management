@@ -44,12 +44,12 @@ func toGetUsersResponse(users []model.Users) getUsersResponse {
 func validateAndMap(r *http.Request) (int, int64, error) {
 	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
 	if err != nil {
-		return 0, 0, errors.New("limit must is number")
+		return 0, 0, errors.New("limit must be a number")
 	}
 
 	cursor, err := strconv.ParseInt(r.URL.Query().Get("cursor"), 10, 64)
 	if err != nil {
-		return 0, 0, errors.New("cursor must is number")
+		return 0, 0, errors.New("cursor must be a number")
 	}
 
 	if limit < 1 || limit > maxLimit {
