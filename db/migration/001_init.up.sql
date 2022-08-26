@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS users (
   id bigint PRIMARY KEY,
   name varchar(255) NOT NULL,
   username varchar(50) UNIQUE NOT NULL,
-  password varchar(50) NOT NULL,
+  password varchar(255) NOT NULL,
   phone_number varchar(20),
   address varchar(255),
   age smallint,
