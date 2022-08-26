@@ -30,5 +30,6 @@ func (mr MasterRoute) initRoutes() {
 func (mr MasterRoute) initUserRouters() {
 	mr.Router.Group(func(r chi.Router) {
 		r.Get("/users", mr.Handler.UserHandler.GetUsers)
+		r.Get("/users/{cursor}", mr.Handler.UserHandler.GetUserByID)
 	})
 }
