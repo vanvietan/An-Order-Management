@@ -462,3 +462,8 @@ vendor/gopkg.in/yaml.v3/writerc.go
 vendor/gopkg.in/yaml.v3/yaml.go
 vendor/gopkg.in/yaml.v3/yamlh.go
 vendor/gopkg.in/yaml.v3/yamlprivateh.go
+vendor/golang.org/x/crypto/bcrypt/base64.go
+vendor/golang.org/x/crypto/bcrypt/bcrypt.go
+vendor/golang.org/x/crypto/blowfish/block.go
+vendor/golang.org/x/crypto/blowfish/cipher.go
+vendor/golang.org/x/crypto/blowfish/const.go

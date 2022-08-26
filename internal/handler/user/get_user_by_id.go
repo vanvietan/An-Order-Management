@@ -38,7 +38,6 @@ func toGetAUserResponse(user model.Users) getAUserResponse {
 }
 
 func validateCursorAndMap(r *http.Request) (int64, error) {
-	// cursor, err := strconv.ParseInt(r.URL.Query().Get("cursor"), 10, 64)
 	cursor, err := strconv.ParseInt(chi.URLParam(r, "cursor"), 10, 64)
 	if err != nil {
 		return 0, errors.New("cursor must be a number")

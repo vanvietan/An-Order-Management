@@ -8,9 +8,13 @@ import (
 	"order-mg/db"
 	userRepo "order-mg/internal/repository/user"
 	userSvc "order-mg/internal/service/user"
+	"order-mg/internal/util"
 
 	"github.com/go-chi/chi"
+	"github.com/sony/sonyflake"
 )
+
+var sf *sonyflake.Sonyflake
 
 func main() {
 	port := ":3000"
@@ -31,6 +35,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("encountered error when create db connection, error: %v", err)
 	}
+
+	//sonyflake
+	util.Init()
 
 	userRepo := userRepo.New(dbConn)
 	userSvc := userSvc.New(userRepo)
