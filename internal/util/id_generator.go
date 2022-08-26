@@ -18,7 +18,7 @@ var rg = struct {
 	rand: rand.New(rand.NewSource(time.Now().UnixNano())),
 }
 
-func init() {
+func Init() {
 
 	var f sonyflake.Settings
 	f.StartTime = time.Date(2022, 4, 1, 0, 0, 0, 0, time.UTC)
