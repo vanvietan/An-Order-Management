@@ -2,22 +2,21 @@ package user
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"log"
 	"order-mg/internal/model"
 	"order-mg/internal/util"
-
-	"golang.org/x/crypto/bcrypt"
-)
-
-const (
-	MinCost     int = 4
-	MaxCost     int = 31
-	DefaultCost int = 10
 )
 
 // CreateUser create a user
 func (i impl) CreateUser(ctx context.Context, user model.Users) (model.Users, error) {
+	if user.Username == "" {
+		return model.Users{}, errors.New("invalid username")
+	}
+	if user.Password == "" {
+		return model.Users{}, errors.New("invalid password")
+	}
+
 	id, err := util.GetNextId()
 	if err != nil {
 		log.Fatalf("error when generate, %v", err)
@@ -25,33 +24,12 @@ func (i impl) CreateUser(ctx context.Context, user model.Users) (model.Users, er
 	}
 	user.Id = id
 
-	user.Password = hashPassword(user.Password)
+	user.Password = util.HashPassword(user.Password)
 	_, errs := i.userRepo.CreateUser(ctx, user)
 	if errs != nil {
-		fmt.Errorf("error when get a user, %v", user.Name)
+		log.Fatalf("error when get a user, %v", user.Name)
 		return model.Users{}, errs
 	}
 	return user, nil
 
 }
-
-func hashPassword(s string) string {
-	bs, err := bcrypt.GenerateFromPassword([]byte(s), MinCost)
-	if err != nil {
-		fmt.Errorf("error when hash pw, %v", bs)
-		return ""
-	}
-	bpass := string(bs)
-	return bpass
-}
-
-// func sonyflakeId(id uint64) int64 {
-// 	body, err := json.Marshal(sonyflake.Decompose(id))
-// 	if err != nil {
-// 		fmt.Errorf("error when hash pw, %v", body)
-// 		return 0
-// 	}
-// 	sf, _ := strconv.ParseInt(string(body), 10, 64)
-
-// 	return sf
-// }

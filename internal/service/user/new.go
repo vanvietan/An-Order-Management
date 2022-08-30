@@ -19,6 +19,9 @@ type UserService interface {
 
 	//DeleteUser delete a user with id
 	DeleteUser(ctx context.Context, userID int64) (bool, error)
+
+	//UpdateUser modify a user
+	UpdateUser(ctx context.Context, user model.Users, userID int64) (model.Users, error)
 }
 type impl struct {
 	userRepo user.UserRepository
