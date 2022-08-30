@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 	"errors"
-	"log"
+	"fmt"
 	"order-mg/internal/model"
 	"order-mg/internal/util"
 )
@@ -19,7 +19,7 @@ func (i impl) CreateUser(ctx context.Context, user model.Users) (model.Users, er
 
 	id, err := util.GetNextId()
 	if err != nil {
-		log.Fatalf("error when generate, %v", err)
+		fmt.Printf("error when generate, %v", err)
 		return model.Users{}, err
 	}
 	user.Id = id
@@ -27,7 +27,9 @@ func (i impl) CreateUser(ctx context.Context, user model.Users) (model.Users, er
 	user.Password = util.HashPassword(user.Password)
 	_, errs := i.userRepo.CreateUser(ctx, user)
 	if errs != nil {
-		log.Fatalf("error when get a user, %v", user.Name)
+		// log.Fatalf("error when get a user, %v", user.Name)
+		fmt.Printf("error when get a user, %v", user.Name)
+
 		return model.Users{}, errs
 	}
 	return user, nil

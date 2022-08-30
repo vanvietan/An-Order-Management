@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 	"errors"
-	"log"
+	"fmt"
 	"order-mg/internal/model"
 	"order-mg/internal/util"
 )
@@ -28,7 +28,7 @@ func (i impl) UpdateUser(ctx context.Context, user model.Users, userID int64) (m
 
 	userF, err := i.userRepo.GetUserByID(ctx, userID)
 	if err != nil {
-		log.Fatalf("error when get user by id, userId: %d", userID)
+		fmt.Printf("error when get user by id, userId: %d", userID)
 		return model.Users{}, err
 	}
 
