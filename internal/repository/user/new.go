@@ -20,6 +20,9 @@ type UserRepository interface {
 
 	//DeleteUser delete a user
 	DeleteUser(ctx context.Context, userID int64) (bool, error)
+
+	//UpdateUser modify a user
+	UpdateUser(ctx context.Context, user model.Users, userID int64) (model.Users, error)
 }
 
 type impl struct {

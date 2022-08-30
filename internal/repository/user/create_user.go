@@ -15,8 +15,7 @@ func (i impl) CreateUser(ctx context.Context, user model.Users) (model.Users, er
 	} else if user.Password == "" {
 		return model.Users{}, tx.Error
 	} else {
-		tx = i.gormDB.Select("Id", "Name", "Username", "Password", "PhoneNumber", "Address",
-			"Age", "Role", "CreatedAt", "UpdatedAt").Create(&user)
+		tx = i.gormDB.Create(&user)
 	}
 	if tx.Error != nil {
 		return model.Users{}, tx.Error

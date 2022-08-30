@@ -3,13 +3,12 @@ package user
 import (
 	"context"
 	"fmt"
+	"log"
 	"order-mg/internal/model"
+	"order-mg/internal/util"
 
-	"github.com/sony/sonyflake"
 	"golang.org/x/crypto/bcrypt"
 )
-
-var sf *sonyflake.Sonyflake
 
 const (
 	MinCost     int = 4
@@ -19,13 +18,13 @@ const (
 
 // CreateUser create a user
 func (i impl) CreateUser(ctx context.Context, user model.Users) (model.Users, error) {
-	// id, err := sf.NextID()
-	// if err != nil {
-	// 	fmt.Errorf("error when get a user id, %v", user.Id)
-	// 	return model.Users{}, err
-	// }
+	id, err := util.GetNextId()
+	if err != nil {
+		log.Fatalf("error when generate, %v", err)
+		return model.Users{}, err
+	}
+	user.Id = id
 
-	// user.Id = sonyflakeId(id)
 	user.Password = hashPassword(user.Password)
 	_, errs := i.userRepo.CreateUser(ctx, user)
 	if errs != nil {

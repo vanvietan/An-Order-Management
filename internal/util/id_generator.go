@@ -1,22 +1,12 @@
 package util
 
 import (
-	"math/rand"
-	"sync"
 	"time"
 
 	"github.com/sony/sonyflake"
 )
 
 var sf *sonyflake.Sonyflake
-
-var rg = struct {
-	sync.Mutex
-	rand *rand.Rand
-}{
-
-	rand: rand.New(rand.NewSource(time.Now().UnixNano())),
-}
 
 func Init() {
 
@@ -29,19 +19,11 @@ func Init() {
 	}
 }
 
-func Int63nRange(min, max int64) int64 {
-
-	rg.Lock()
-	defer rg.Unlock()
-	return rg.rand.Int63n(max-min) + min
-}
-
-func GetNextId() uint64 {
-
+func GetNextId() (int64, error) {
 	ret, err := sf.NextID()
 	if err != nil {
-
-		ret = uint64(Int63nRange(1926425572, 1926425572223607))
+		return 0, err
 	}
-	return ret
+
+	return int64(ret), nil
 }
