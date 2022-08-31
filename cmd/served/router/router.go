@@ -33,5 +33,6 @@ func (mr MasterRoute) initUserRouters() {
 		r.Get("/users/{cursor}", mr.Handler.UserHandler.GetUserByID)
 		r.Post("/users", mr.Handler.UserHandler.CreateUser)
 		r.Delete("/users/{cursor}", mr.Handler.UserHandler.DeleteUser)
+		r.Put("/users/{cursor}", mr.Handler.UserHandler.UpdateUser)
 	})
 }
