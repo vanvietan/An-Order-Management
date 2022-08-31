@@ -9,13 +9,13 @@ type Users struct {
 	Id          int64     `json:"id"`
 	Name        string    `json:"name"`
 	Username    string    `json:"username"`
-	Password    string    `json:"password"`
+	Password    string    `json:"password,omitempty"`
 	PhoneNumber string    `json:"phone_number"`
 	Address     string    `json:"address"`
 	Age         int8      `json:"age"`
 	Role        Role      `json:"role"` //Enums Role
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
-	Orders      []Order   `gorm:"foreignKey:UserId;references:Id"`
-	Histories   []History `gorm:"foreignKey:UserId;references:Id"`
+	Orders      []Order   `gorm:"foreignKey:UserId;references:Id" json:"Orders,omitempty"`
+	Histories   []History `gorm:"foreignKey:UserId;references:Id" json:"Histories,omitempty"`
 }

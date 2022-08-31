@@ -32,19 +32,18 @@ func (h UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
 
 func toGetAUserResponse(user model.Users) getAUserResponse {
 	return getAUserResponse{
-		User:   user,
-		Cursor: user.Id,
+		User: user,
 	}
 }
 
 func validateCursorAndMap(r *http.Request) (int64, error) {
-	cursor, err := strconv.ParseInt(chi.URLParam(r, "cursor"), 10, 64)
+	ID, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
-		return 0, errors.New("cursor must be a number")
+		return 0, errors.New("id must be a number")
 	}
-	if cursor < 0 {
-		return 0, errors.New("invalid cursor")
+	if ID < 0 {
+		return 0, errors.New("invalid id")
 	}
 
-	return cursor, nil
+	return ID, nil
 }
