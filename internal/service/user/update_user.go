@@ -2,29 +2,12 @@ package user
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"order-mg/internal/model"
 	"order-mg/internal/util"
 )
 
 func (i impl) UpdateUser(ctx context.Context, user model.Users, userID int64) (model.Users, error) {
-
-	if userID <= 0 {
-		return model.Users{}, errors.New("id is invalid")
-	}
-	if user.Password == "" {
-		return model.Users{}, errors.New("password is empty")
-	}
-	if user.PhoneNumber == "" {
-		return model.Users{}, errors.New("phone number is empty")
-	}
-	if user.Address == "" {
-		return model.Users{}, errors.New("address is empty")
-	}
-	if user.Age <= 0 || user.Age > 100 {
-		return model.Users{}, errors.New("user age is invalid")
-	}
 
 	userF, err := i.userRepo.GetUserByID(ctx, userID)
 	if err != nil {
@@ -52,5 +35,6 @@ func (i impl) UpdateUser(ctx context.Context, user model.Users, userID int64) (m
 	}
 	i.userRepo.UpdateUser(ctx, userF)
 
+	userF.Password = ""
 	return userF, nil
 }

@@ -30,9 +30,9 @@ func (mr MasterRoute) initRoutes() {
 func (mr MasterRoute) initUserRouters() {
 	mr.Router.Group(func(r chi.Router) {
 		r.Get("/users", mr.Handler.UserHandler.GetUsers)
-		r.Get("/users/{cursor}", mr.Handler.UserHandler.GetUserByID)
+		r.Get("/users/{id}", mr.Handler.UserHandler.GetUserByID)
 		r.Post("/users", mr.Handler.UserHandler.CreateUser)
-		r.Delete("/users/{cursor}", mr.Handler.UserHandler.DeleteUser)
-		r.Put("/users/{cursor}", mr.Handler.UserHandler.UpdateUser)
+		r.Delete("/users/{id}", mr.Handler.UserHandler.DeleteUser)
+		r.Put("/users/{id}", mr.Handler.UserHandler.UpdateUser)
 	})
 }

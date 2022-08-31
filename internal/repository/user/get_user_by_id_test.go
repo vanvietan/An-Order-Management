@@ -13,14 +13,14 @@ import (
 
 func TestGetUserByID(t *testing.T) {
 	type arg struct {
-		givenId   int64
+		givenID   int64
 		expResult model.Users
 		expErr    error
 	}
 
 	tcs := map[string]arg{
-		"success: given id isn't 0": {
-			givenId: 101,
+		"success: id existed": {
+			givenID: 101,
 			expResult: model.Users{
 				Id:          101,
 				Name:        "abc",
@@ -48,7 +48,7 @@ func TestGetUserByID(t *testing.T) {
 			instance := New(dbConn)
 
 			//WHEN
-			rs, err := instance.GetUserByID(context.Background(), tc.givenId)
+			rs, err := instance.GetUserByID(context.Background(), tc.givenID)
 
 			//THEN
 			if err != nil {
