@@ -47,10 +47,10 @@ func checkValidateUpdate(r *http.Request) (model.Users, error) {
 	if user.Address == "" || len(user.Address) > 120 {
 		return model.Users{}, errors.New("address is invalid")
 	}
-	if user.Age <= 0 || user.Age > 100 {
+	if user.Age <= 0 || user.Age > 120 {
 		return model.Users{}, errors.New("user age is invalid")
 	}
-	if user.Role != "USER" {
+	if user.Role != model.RoleUser {
 		return model.Users{}, errors.New("user role is invalid")
 	}
 

@@ -13,5 +13,8 @@ func (i impl) GetUsers(ctx context.Context, limit int, lastID int64) ([]model.Us
 		fmt.Printf("error when get users, limit: %d, lastID: %d", limit, lastID)
 		return nil, err
 	}
+	for i := range users {
+		users[i].Password = ""
+	}
 	return users, nil
 }

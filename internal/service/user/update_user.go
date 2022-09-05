@@ -16,23 +16,17 @@ func (i impl) UpdateUser(ctx context.Context, user model.Users, userID int64) (m
 	}
 
 	user.Password = util.HashPassword(user.Password)
-	comparePassword := util.ComparePassword(userF.Password, user.Password)
 
-	if !comparePassword {
-		userF.Password = user.Password
-	}
-	if userF.Name != user.Name {
-		userF.Name = user.Name
-	}
-	if userF.Address != user.Address {
-		userF.Address = user.Address
-	}
-	if userF.PhoneNumber != user.PhoneNumber {
-		userF.PhoneNumber = user.PhoneNumber
-	}
-	if userF.Age != user.Age {
-		userF.Age = user.Age
-	}
+	userF.Password = user.Password
+
+	userF.Name = user.Name
+
+	userF.Address = user.Address
+
+	userF.PhoneNumber = user.PhoneNumber
+
+	userF.Age = user.Age
+
 	i.userRepo.UpdateUser(ctx, userF)
 
 	userF.Password = ""

@@ -3,6 +3,7 @@ package user
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"order-mg/internal/handler/common"
 	"order-mg/internal/model"
@@ -20,6 +21,7 @@ func (h UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	userCreated, err := h.UserSvc.CreateUser(r.Context(), reqBody)
+	fmt.Printf("Handler: %+v", userCreated)
 	if err != nil {
 		common.ResponseJson(w, http.StatusInternalServerError, common.InternalCommonErrorResponse)
 		return

@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"errors"
 	"order-mg/db"
 	"order-mg/internal/model"
 	"order-mg/internal/util"
@@ -34,6 +35,11 @@ func TestGetUserByID(t *testing.T) {
 				UpdatedAt:   time.Date(2022, 3, 15, 16, 0, 0, 0, time.UTC),
 			},
 		},
+		"fail: id isn't existed": {
+			givenID:   200,
+			expResult: model.Users{},
+			expErr:    errors.New("record not found"),
+		},
 	}
 
 	dbConn, errDb := db.CreateDBConnection()
@@ -57,5 +63,6 @@ func TestGetUserByID(t *testing.T) {
 				require.Equal(t, tc.expResult, rs)
 			}
 		})
+
 	}
 }

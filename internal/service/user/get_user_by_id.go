@@ -17,7 +17,7 @@ func (i impl) GetUserByID(ctx context.Context, userID int64) (model.Users, error
 		fmt.Printf("error when get user by id, userId: %d", userID)
 		return model.Users{}, err
 	}
-
+	user.Password = ""
 	return user, nil
 
 }
