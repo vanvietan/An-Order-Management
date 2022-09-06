@@ -1,15 +1,13 @@
 package user
 
 import (
-	"encoding/json"
-	"errors"
 	"net/http"
 	"order-mg/internal/handler/common"
-	"order-mg/internal/model"
 )
 
+// UpdateUser modify user fields
 func (h UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
-	reqBody, errs := checkValidateUpdate(r)
+	reqBody, errs := checkValidate(r)
 	if errs != nil {
 		common.ResponseJson(w, http.StatusBadRequest, common.CommonErrorResponse{
 			Code:        "invalid request",
@@ -33,26 +31,4 @@ func (h UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	common.ResponseJson(w, http.StatusOK, toGetAUserResponse(user))
 
-}
-func checkValidateUpdate(r *http.Request) (model.Users, error) {
-	var user model.Users
-	_ = json.NewDecoder(r.Body).Decode(&user)
-
-	if user.Password == "" || len(user.Password) > 14 {
-		return model.Users{}, errors.New("password is invalid")
-	}
-	if user.PhoneNumber == "" || len(user.PhoneNumber) > 11 || len(user.PhoneNumber) < 10 {
-		return model.Users{}, errors.New("phone number is invalid")
-	}
-	if user.Address == "" || len(user.Address) > 120 {
-		return model.Users{}, errors.New("address is invalid")
-	}
-	if user.Age <= 0 || user.Age > 120 {
-		return model.Users{}, errors.New("user age is invalid")
-	}
-	if user.Role != model.RoleUser {
-		return model.Users{}, errors.New("user role is invalid")
-	}
-
-	return user, nil
 }

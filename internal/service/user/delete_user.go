@@ -3,7 +3,8 @@ package user
 import (
 	"context"
 	"errors"
-	"fmt"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // DeleteUser delete a user
@@ -17,7 +18,7 @@ func (i impl) DeleteUser(ctx context.Context, userID int64) (bool, error) {
 	}
 	isSucess, err := i.userRepo.DeleteUser(ctx, userID)
 	if err != nil {
-		fmt.Printf("error when deleting a user with id , %v", userID)
+		log.Printf("error when deleting a user with id , %v", userID)
 	}
 	if !isSucess {
 		return false, errors.New("can't delete a user")
