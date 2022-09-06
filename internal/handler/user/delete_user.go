@@ -9,6 +9,7 @@ import (
 	"github.com/go-chi/chi"
 )
 
+// DeleteUser delete a user
 func (h UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	userID, err := validateIDAndMap(r)

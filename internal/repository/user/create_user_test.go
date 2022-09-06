@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"errors"
 	"order-mg/db"
 	"order-mg/internal/model"
 	"order-mg/internal/util"
@@ -43,6 +44,22 @@ func TestCreateUser(t *testing.T) {
 				Role:        "ADMIN",
 				CreatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
 				UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC)},
+		},
+		"fail: username duplicated": {
+			givenResult: model.Users{
+				Id:          103,
+				Name:        "abc",
+				Username:    "abc",
+				Password:    "abc",
+				PhoneNumber: "123",
+				Address:     "abc",
+				Age:         1,
+				Role:        "ADMIN",
+				CreatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+				UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+			},
+			expResult: model.Users{},
+			expErr:    errors.New("ERROR: duplicate key value violates unique constraint \"users_pkey\" (SQLSTATE 23505)"),
 		},
 	}
 

@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"errors"
 	"order-mg/db"
 	"order-mg/internal/util"
 	"testing"
@@ -20,6 +21,11 @@ func TestDeleteUser(t *testing.T) {
 		"success: delete success": {
 			givenID:   101,
 			expResult: true,
+		},
+		"fail: no user id": {
+			givenID:   200,
+			expResult: true,
+			expErr:    errors.New("record not found"),
 		},
 	}
 
