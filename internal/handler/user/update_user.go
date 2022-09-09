@@ -3,6 +3,8 @@ package user
 import (
 	"net/http"
 	"order-mg/internal/handler/common"
+
+	_ "github.com/stretchr/testify/mock"
 )
 
 // UpdateUser modify user fields
