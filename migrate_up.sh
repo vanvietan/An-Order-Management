@@ -7,3 +7,5 @@ g
 
 #test
 go test -v .\internal\repository\user\ -run TestGetUsers
+#test mac 
+go test -v ./internal/repository/user/ -run TestGetUsers
