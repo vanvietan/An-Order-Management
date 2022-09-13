@@ -6,6 +6,8 @@ import (
 	"order-mg/internal/model"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestGetUsers(t *testing.T) {
@@ -90,11 +92,17 @@ func TestGetUsers(t *testing.T) {
 		t.Run(s, func(t *testing.T) {
 			//GIVEN
 			instance := new(mocks.UserRepository)
-			instance.On("GetUsers", ctx, tc.givenLimit, tc.givenLastID)
+			instance.On("GetUsers", ctx, tc.givenLimit, tc.givenLastID).Return(tc.mockResp, tc.mockErr)
 
 			//WHEN
+			rs, err := instance.GetUsers(context.Background(), tc.givenLimit, tc.givenLastID)
 
 			//THEN
+			if err != nil {
+				require.EqualError(t, err, tc.expErr.Error())
+			} else {
+				require.Equal(t, tc.mockResp, rs)
+			}
 		})
 	}
 }
