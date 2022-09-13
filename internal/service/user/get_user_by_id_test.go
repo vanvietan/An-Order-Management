@@ -12,21 +12,41 @@ import (
 )
 
 func TestGetUserByID(t *testing.T) {
-	type arg struct {
-		givenID  int64
-		mockErr  error
+	type getUserByID struct {
+		mockIn   int64
 		mockResp model.Users
-		expErr   error
+		mockErr  error
+	}
+
+	type arg struct {
+		givenID     int64
+		getUserByID getUserByID
+		expRs       model.Users
+		expErr      error
 	}
 
 	tcs := map[string]arg{
 		"success: get a user": {
 			givenID: 101,
-			mockResp: model.Users{
+			getUserByID: getUserByID{
+				mockIn: 101,
+				mockResp: model.Users{
+					Id:          101,
+					Name:        "abc",
+					Username:    "abc1",
+					Password:    "abc",
+					PhoneNumber: "123",
+					Address:     "abc",
+					Age:         1,
+					Role:        "ADMIN",
+					CreatedAt:   time.Date(2022, 3, 15, 16, 0, 0, 0, time.UTC),
+					UpdatedAt:   time.Date(2022, 3, 15, 16, 0, 0, 0, time.UTC),
+				},
+			},
+			expRs: model.Users{
 				Id:          101,
 				Name:        "abc",
 				Username:    "abc1",
-				Password:    "abc",
 				PhoneNumber: "123",
 				Address:     "abc",
 				Age:         1,
@@ -36,9 +56,9 @@ func TestGetUserByID(t *testing.T) {
 			},
 		},
 		"fail: id isn't existed": {
-			givenID:  0,
-			mockResp: model.Users{},
-			expErr:   errors.New("invalid userID"),
+			givenID: 0,
+			expRs:   model.Users{},
+			expErr:  errors.New("invalid userID"),
 		},
 	}
 	ctx := context.Background()
@@ -47,16 +67,17 @@ func TestGetUserByID(t *testing.T) {
 		t.Run(s, func(t *testing.T) {
 			//GIVEN
 			instance := new(mocks.UserRepository)
-			instance.On("GetUserByID", ctx, tc.givenID).Return(tc.mockResp, tc.mockErr)
+			instance.On("GetUserByID", ctx, tc.getUserByID.mockIn).Return(tc.getUserByID.mockResp, tc.getUserByID.mockErr)
 
 			//WHEN
-			rs, err := instance.GetUserByID(context.Background(), tc.givenID)
+			svc := New(instance)
+			rs, err := svc.GetUserByID(ctx, tc.givenID)
 
 			//THEN
 			if err != nil {
 				require.EqualError(t, err, tc.expErr.Error())
 			} else {
-				require.Equal(t, tc.mockResp, rs)
+				require.Equal(t, tc.expRs, rs)
 			}
 		})
 	}
