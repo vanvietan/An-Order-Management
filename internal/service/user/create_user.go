@@ -10,7 +10,6 @@ import (
 
 // CreateUser create a user
 func (i impl) CreateUser(ctx context.Context, input model.Users) (model.Users, error) {
-
 	id, err := util.GetNextId()
 	if err != nil {
 		log.Printf("error when generate, %v", err)

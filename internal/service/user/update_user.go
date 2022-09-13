@@ -8,7 +8,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func (i impl) UpdateUser(ctx context.Context, user model.Users, userID int64) (model.Users, error) {
+func (i impl) UpdateUser(ctx context.Context, input model.Users, userID int64) (model.Users, error) {
 
 	userF, err := i.userRepo.GetUserByID(ctx, userID)
 	if err != nil {
@@ -16,13 +16,13 @@ func (i impl) UpdateUser(ctx context.Context, user model.Users, userID int64) (m
 		return model.Users{}, err
 	}
 
-	user.Password = util.HashPassword(user.Password)
-	userF.Password = user.Password
-	userF.Name = user.Name
-	userF.Address = user.Address
-	userF.PhoneNumber = user.PhoneNumber
-	userF.Age = user.Age
-	userF.Role = user.Role
+	input.Password = util.HashPassword(input.Password)
+	userF.Password = input.Password
+	userF.Name = input.Name
+	userF.Address = input.Address
+	userF.PhoneNumber = input.PhoneNumber
+	userF.Age = input.Age
+	userF.Role = input.Role
 
 	i.userRepo.UpdateUser(ctx, userF)
 
