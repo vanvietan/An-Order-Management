@@ -4,11 +4,11 @@ import (
 	"context"
 	mocks "order-mg/internal/mocks/repository/user"
 	"order-mg/internal/model"
+	"order-mg/internal/util"
 	"testing"
 	"time"
 
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/stretchr/testify/mock"
 
 	"github.com/stretchr/testify/require"
 )
@@ -34,8 +34,9 @@ func TestUpdateUser(t *testing.T) {
 			updateUser: updateUser{
 				mockID: 0,
 				mockInput: model.Users{
-					Name: "nghia",
-					// Username:    "abc",
+					Id:          0,
+					Name:        "nghia",
+					Username:    "abc",
 					Password:    "nghia",
 					PhoneNumber: "123",
 					Address:     "abc",
@@ -58,7 +59,10 @@ func TestUpdateUser(t *testing.T) {
 				},
 			},
 			givenInput: model.Users{
+				Id:          0,
 				Name:        "nghia",
+				Username:    "abc",
+				Password:    "nghia",
 				PhoneNumber: "123",
 				Address:     "abc",
 				Age:         1,
@@ -86,24 +90,33 @@ func TestUpdateUser(t *testing.T) {
 		t.Run(s, func(t *testing.T) {
 			//GIVEN
 			instance := new(mocks.UserRepository)
-			instance.On("GetUserByID", ctx, tc.updateUser.mockID).Return(model.Users{}, tc.updateUser.mockErr)
-			instance.On("UpdateUser", ctx, tc.updateUser.mockInput).Return(tc.updateUser.mockResp, tc.updateUser.mockErr)
+			instance.On("GetUserByID", mock.Anything, tc.updateUser.mockID).Return(tc.updateUser.mockResp, tc.updateUser.mockErr)
+			instance.On("UpdateUser", mock.Anything, tc.updateUser.mockInput).Return(tc.updateUser.mockResp, tc.updateUser.mockErr)
+
+			hashPasswordFunc = func(s string) string {
+				return "nghia"
+			}
+
+			defer func() {
+				hashPasswordFunc = util.HashPassword
+			}()
 
 			//WHEN
 			svc := New(instance)
 			rs, err := svc.UpdateUser(ctx, tc.givenInput, tc.givenID)
 
 			//THEN
-			if err != nil {
+			if tc.expErr != nil {
 				require.EqualError(t, err, tc.expErr.Error())
 			} else {
-				// require.Equal(t, tc.expRs, rs)
-				if !cmp.Equal(tc.expRs, rs,
-					cmpopts.IgnoreFields(model.Users{}, "CreatedAt", "UpdatedAt", "Password")) {
-					t.Errorf("\n user mismatched. \n expected: %+v \n got: %+v \n diff: %+v", tc.expRs, rs,
-						cmp.Diff(tc.expRs, rs, cmpopts.IgnoreFields(model.Users{}, "CreatedAt", "UpdatedAt", "Password")))
-					t.FailNow()
-				}
+				require.NoError(t, err)
+				require.Equal(t, tc.expRs, rs)
+				// if !cmp.Equal(tc.expRs, rs,
+				// 	cmpopts.IgnoreFields(model.Users{}, "Password")) {
+				// 	t.Errorf("\n user mismatched. \n expected: %+v \n got: %+v \n diff: %+v", tc.expRs, rs,
+				// 		cmp.Diff(tc.expRs, rs, cmpopts.IgnoreFields(model.Users{}, "Password")))
+				// 	t.FailNow()
+				// }
 			}
 		})
 	}
