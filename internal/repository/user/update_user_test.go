@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"errors"
 	"order-mg/db"
 	"order-mg/internal/model"
 	"order-mg/internal/util"
@@ -46,6 +47,22 @@ func TestUpdateUser(t *testing.T) {
 				UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
 			},
 		},
+		"fail: update fail": {
+			givenResult: model.Users{
+				Id:          103,
+				Name:        "nghia",
+				Username:    "abc",
+				Password:    "nghia",
+				PhoneNumber: "123",
+				Address:     "abc",
+				Age:         1,
+				Role:        "ADMIN",
+				CreatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+				UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+			},
+			expResult: model.Users{},
+			expErr:    errors.New("ERROR: duplicate key value violates unique constraint \"users_username_key\" (SQLSTATE 23505)"),
+		},
 	}
 
 	dbConn, errDB := db.CreateDBConnection()
@@ -63,7 +80,7 @@ func TestUpdateUser(t *testing.T) {
 			rs, err := instance.UpdateUser(context.Background(), tc.givenResult)
 
 			//THEN
-			if err != nil {
+			if tc.expErr != nil {
 				require.EqualError(t, err, tc.expErr.Error())
 			} else {
 				// require.Equal(t, tc.expResult, rs)

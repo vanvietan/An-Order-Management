@@ -78,9 +78,10 @@ func TestCreateUser(t *testing.T) {
 			rs, err := instance.CreateUser(context.Background(), tc.givenResult)
 
 			//THEN
-			if err != nil {
+			if tc.expErr != nil {
 				require.EqualError(t, err, tc.expErr.Error())
 			} else {
+				require.NoError(t, err)
 				require.Equal(t, tc.expResult, rs)
 			}
 

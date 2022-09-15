@@ -19,7 +19,7 @@ type UserRepository interface {
 	CreateUser(ctx context.Context, user model.Users) (model.Users, error)
 
 	//DeleteUser delete a user
-	DeleteUser(ctx context.Context, userID int64) (bool, error)
+	DeleteUser(ctx context.Context, userID int64) error
 
 	//UpdateUser modify a user
 	UpdateUser(ctx context.Context, user model.Users) (model.Users, error)

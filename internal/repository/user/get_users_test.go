@@ -102,9 +102,10 @@ func TestGetUsers(t *testing.T) {
 			rs, err := instance.GetUsers(context.Background(), tc.givenLimit, tc.givenLastID)
 
 			// THEN
-			if err != nil {
+			if tc.expErr != nil {
 				require.EqualError(t, err, tc.expErr.Error())
 			} else {
+				require.NoError(t, err)
 				require.Equal(t, tc.expResult, rs)
 			}
 		})
