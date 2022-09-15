@@ -12,20 +12,17 @@ import (
 
 func TestDeleteUser(t *testing.T) {
 	type arg struct {
-		givenID   int64
-		expResult bool
-		expErr    error
+		givenID int64
+		expErr  error
 	}
 
 	tcs := map[string]arg{
 		"success: delete success": {
-			givenID:   101,
-			expResult: true,
+			givenID: 101,
 		},
 		"fail: no user id": {
-			givenID:   200,
-			expResult: false,
-			expErr:    errors.New("record not found"),
+			givenID: 200,
+			expErr:  errors.New("record not found"),
 		},
 	}
 
@@ -41,13 +38,13 @@ func TestDeleteUser(t *testing.T) {
 			instance := New(dbConn)
 
 			//WHEN
-			rs, err := instance.DeleteUser(context.Background(), tc.givenID)
+			err := instance.DeleteUser(context.Background(), tc.givenID)
 
 			//THEN
-			if err != nil {
+			if tc.expErr != nil {
 				require.EqualError(t, err, tc.expErr.Error())
 			} else {
-				require.Equal(t, tc.expResult, rs)
+				require.NoError(t, err)
 			}
 
 		})

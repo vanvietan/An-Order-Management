@@ -36,24 +36,17 @@ func (_m *UserService) CreateUser(ctx context.Context, _a1 model.Users) (model.U
 }
 
 // DeleteUser provides a mock function with given fields: ctx, userID
-func (_m *UserService) DeleteUser(ctx context.Context, userID int64) (bool, error) {
+func (_m *UserService) DeleteUser(ctx context.Context, userID int64) error {
 	ret := _m.Called(ctx, userID)
 
-	var r0 bool
-	if rf, ok := ret.Get(0).(func(context.Context, int64) bool); ok {
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, int64) error); ok {
 		r0 = rf(ctx, userID)
 	} else {
-		r0 = ret.Get(0).(bool)
+		r0 = ret.Error(0)
 	}
 
-	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, int64) error); ok {
-		r1 = rf(ctx, userID)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
+	return r0
 }
 
 // GetUserByID provides a mock function with given fields: ctx, userId

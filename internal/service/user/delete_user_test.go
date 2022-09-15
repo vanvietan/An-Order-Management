@@ -13,14 +13,12 @@ import (
 
 func TestDeleteUser(t *testing.T) {
 	type deleteUser struct {
-		mockID     int64
-		mockResult bool
-		mockErr    error
+		mockID  int64
+		mockErr error
 	}
 	type arg struct {
 		givenID    int64
 		deleteUser deleteUser
-		expResult  bool
 		expErr     error
 	}
 
@@ -28,20 +26,16 @@ func TestDeleteUser(t *testing.T) {
 		"fail: id isn't existed": {
 			givenID: 200,
 			deleteUser: deleteUser{
-				mockID:     200,
-				mockResult: false,
-				mockErr:    errors.New("can't delete a user"),
+				mockID:  200,
+				mockErr: errors.New("can't delete a user"),
 			},
-			expResult: false,
-			expErr:    errors.New("can't delete a user"),
+			expErr: errors.New("can't delete a user"),
 		},
 		"success: delete successful": {
 			givenID: 101,
 			deleteUser: deleteUser{
-				mockID:     101,
-				mockResult: true,
+				mockID: 101,
 			},
-			expResult: true,
 		},
 	}
 
@@ -51,7 +45,7 @@ func TestDeleteUser(t *testing.T) {
 		t.Run(s, func(t *testing.T) {
 			//GIVEN
 			instance := new(mocks.UserRepository)
-			instance.On("DeleteUser", mock.Anything, tc.deleteUser.mockID).Return(tc.deleteUser.mockResult, tc.deleteUser.mockErr)
+			instance.On("DeleteUser", mock.Anything, tc.deleteUser.mockID).Return(tc.deleteUser.mockErr)
 
 			//WHEN
 			svc := New(instance)
