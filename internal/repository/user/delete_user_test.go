@@ -24,7 +24,7 @@ func TestDeleteUser(t *testing.T) {
 		},
 		"fail: no user id": {
 			givenID:   200,
-			expResult: true,
+			expResult: false,
 			expErr:    errors.New("record not found"),
 		},
 	}

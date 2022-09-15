@@ -2,13 +2,14 @@ package user
 
 import (
 	"context"
+	"errors"
 	mocks "order-mg/internal/mocks/repository/user"
 	"order-mg/internal/model"
+	"order-mg/internal/util"
 	"testing"
 	"time"
 
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/stretchr/testify/mock"
 
 	"github.com/stretchr/testify/require"
 )
@@ -30,12 +31,13 @@ func TestUpdateUser(t *testing.T) {
 
 	tcs := map[string]arg{
 		"success: update with no error": {
-			givenID: 0,
+			givenID: 100,
 			updateUser: updateUser{
-				mockID: 0,
+				mockID: 100,
 				mockInput: model.Users{
-					Name: "nghia",
-					// Username:    "abc",
+					Id:          100,
+					Name:        "nghia",
+					Username:    "abc",
 					Password:    "nghia",
 					PhoneNumber: "123",
 					Address:     "abc",
@@ -45,7 +47,7 @@ func TestUpdateUser(t *testing.T) {
 					UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
 				},
 				mockResp: model.Users{
-					Id:          0,
+					Id:          100,
 					Name:        "nghia",
 					Username:    "abc",
 					Password:    "nghia",
@@ -58,7 +60,10 @@ func TestUpdateUser(t *testing.T) {
 				},
 			},
 			givenInput: model.Users{
+				Id:          100,
 				Name:        "nghia",
+				Username:    "abc",
+				Password:    "nghia",
 				PhoneNumber: "123",
 				Address:     "abc",
 				Age:         1,
@@ -67,7 +72,7 @@ func TestUpdateUser(t *testing.T) {
 				UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
 			},
 			expRs: model.Users{
-				Id:          0,
+				Id:          100,
 				Name:        "nghia",
 				Username:    "abc",
 				PhoneNumber: "123",
@@ -78,6 +83,60 @@ func TestUpdateUser(t *testing.T) {
 				UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
 			},
 		},
+		"fail: can't find userID": {
+			givenID: 200,
+			updateUser: updateUser{
+				mockID:   200,
+				mockResp: model.Users{},
+				mockErr:  errors.New("something error"),
+			},
+			givenInput: model.Users{
+				Id:          200,
+				Name:        "hai",
+				Username:    "abc",
+				Password:    "nghia",
+				PhoneNumber: "123",
+				Address:     "abc",
+				Age:         1,
+				Role:        "ADMIN",
+				CreatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+				UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+			},
+			expRs:  model.Users{},
+			expErr: errors.New("something error"),
+		},
+		// "fail: save error with age": {
+		// 	givenID: 300,
+		// 	updateUser: updateUser{
+		// 		mockID: 300,
+		// 		mockInput: model.Users{
+		// 			Id:          300,
+		// 			Name:        "nghia",
+		// 			Password:    "nghia",
+		// 			PhoneNumber: "123",
+		// 			Address:     "abc",
+		// 			Age:         123,
+		// 			Role:        "ADMIN",
+		// 			CreatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+		// 			UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+		// 		},
+		// 		mockResp: model.Users{},
+		// 		mockErr:  errors.New("something error"),
+		// 	},
+		// 	givenInput: model.Users{
+		// 		Id:          300,
+		// 		Name:        "nghia",
+		// 		Password:    "nghia",
+		// 		PhoneNumber: "123",
+		// 		Address:     "abc",
+		// 		Age:         123,
+		// 		Role:        "ADMIN",
+		// 		CreatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+		// 		UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+		// 	},
+		// 	expRs:  model.Users{},
+		// 	expErr: errors.New("something error"),
+		// },
 	}
 
 	ctx := context.Background()
@@ -86,24 +145,33 @@ func TestUpdateUser(t *testing.T) {
 		t.Run(s, func(t *testing.T) {
 			//GIVEN
 			instance := new(mocks.UserRepository)
-			instance.On("GetUserByID", ctx, tc.updateUser.mockID).Return(model.Users{}, tc.updateUser.mockErr)
-			instance.On("UpdateUser", ctx, tc.updateUser.mockInput).Return(tc.updateUser.mockResp, tc.updateUser.mockErr)
+			instance.On("GetUserByID", mock.Anything, tc.updateUser.mockID).Return(tc.updateUser.mockResp, tc.updateUser.mockErr)
+			instance.On("UpdateUser", mock.Anything, tc.updateUser.mockInput).Return(tc.updateUser.mockResp, tc.updateUser.mockErr)
+
+			hashPasswordFunc = func(s string) string {
+				return "nghia"
+			}
+
+			defer func() {
+				hashPasswordFunc = util.HashPassword
+			}()
 
 			//WHEN
 			svc := New(instance)
 			rs, err := svc.UpdateUser(ctx, tc.givenInput, tc.givenID)
 
 			//THEN
-			if err != nil {
+			if tc.expErr != nil {
 				require.EqualError(t, err, tc.expErr.Error())
 			} else {
-				// require.Equal(t, tc.expRs, rs)
-				if !cmp.Equal(tc.expRs, rs,
-					cmpopts.IgnoreFields(model.Users{}, "CreatedAt", "UpdatedAt", "Password")) {
-					t.Errorf("\n user mismatched. \n expected: %+v \n got: %+v \n diff: %+v", tc.expRs, rs,
-						cmp.Diff(tc.expRs, rs, cmpopts.IgnoreFields(model.Users{}, "CreatedAt", "UpdatedAt", "Password")))
-					t.FailNow()
-				}
+				require.NoError(t, err)
+				require.Equal(t, tc.expRs, rs)
+				// if !cmp.Equal(tc.expRs, rs,
+				// 	cmpopts.IgnoreFields(model.Users{}, "Password")) {
+				// 	t.Errorf("\n user mismatched. \n expected: %+v \n got: %+v \n diff: %+v", tc.expRs, rs,
+				// 		cmp.Diff(tc.expRs, rs, cmpopts.IgnoreFields(model.Users{}, "Password")))
+				// 	t.FailNow()
+				// }
 			}
 		})
 	}

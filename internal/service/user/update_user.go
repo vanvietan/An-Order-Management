@@ -8,6 +8,9 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+var hashPasswordFunc = util.HashPassword
+
+// UpdateUser : modify user
 func (i impl) UpdateUser(ctx context.Context, input model.Users, userID int64) (model.Users, error) {
 
 	userF, err := i.userRepo.GetUserByID(ctx, userID)
@@ -16,7 +19,7 @@ func (i impl) UpdateUser(ctx context.Context, input model.Users, userID int64) (
 		return model.Users{}, err
 	}
 
-	input.Password = util.HashPassword(input.Password)
+	input.Password = hashPasswordFunc(input.Password)
 	userF.Password = input.Password
 	userF.Name = input.Name
 	userF.Address = input.Address
@@ -24,7 +27,10 @@ func (i impl) UpdateUser(ctx context.Context, input model.Users, userID int64) (
 	userF.Age = input.Age
 	userF.Role = input.Role
 
-	i.userRepo.UpdateUser(ctx, userF)
+	_, errU := i.userRepo.UpdateUser(ctx, userF)
+	if errU != nil {
+		log.Printf("error when save user, userId: %d", userF.Id)
+	}
 
 	userF.Password = ""
 	return userF, nil

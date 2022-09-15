@@ -55,10 +55,20 @@ func TestGetUserByID(t *testing.T) {
 				UpdatedAt:   time.Date(2022, 3, 15, 16, 0, 0, 0, time.UTC),
 			},
 		},
-		"fail: id isn't existed": {
+		"fail: invalid id": {
 			givenID: 0,
 			expRs:   model.Users{},
 			expErr:  errors.New("invalid userID"),
+		},
+		"fail: can't find the id": {
+			givenID: 200,
+			getUserByID: getUserByID{
+				mockIn:   200,
+				mockResp: model.Users{},
+				mockErr:  errors.New("invalid userID"),
+			},
+			expRs:  model.Users{},
+			expErr: errors.New("invalid userID"),
 		},
 	}
 	ctx := context.Background()
@@ -74,9 +84,10 @@ func TestGetUserByID(t *testing.T) {
 			rs, err := svc.GetUserByID(ctx, tc.givenID)
 
 			//THEN
-			if err != nil {
+			if tc.expErr != nil {
 				require.EqualError(t, err, tc.expErr.Error())
 			} else {
+				require.NoError(t, err)
 				require.Equal(t, tc.expRs, rs)
 			}
 		})
