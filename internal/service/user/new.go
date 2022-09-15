@@ -18,7 +18,7 @@ type UserService interface {
 	CreateUser(ctx context.Context, user model.Users) (model.Users, error)
 
 	//DeleteUser delete a user with id
-	DeleteUser(ctx context.Context, userID int64) (bool, error)
+	DeleteUser(ctx context.Context, userID int64) error
 
 	//UpdateUser modify a user
 	UpdateUser(ctx context.Context, user model.Users, userID int64) (model.Users, error)

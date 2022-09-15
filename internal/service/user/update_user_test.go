@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"errors"
 	mocks "order-mg/internal/mocks/repository/user"
 	"order-mg/internal/model"
 	"order-mg/internal/util"
@@ -30,11 +31,11 @@ func TestUpdateUser(t *testing.T) {
 
 	tcs := map[string]arg{
 		"success: update with no error": {
-			givenID: 0,
+			givenID: 100,
 			updateUser: updateUser{
-				mockID: 0,
+				mockID: 100,
 				mockInput: model.Users{
-					Id:          0,
+					Id:          100,
 					Name:        "nghia",
 					Username:    "abc",
 					Password:    "nghia",
@@ -46,7 +47,7 @@ func TestUpdateUser(t *testing.T) {
 					UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
 				},
 				mockResp: model.Users{
-					Id:          0,
+					Id:          100,
 					Name:        "nghia",
 					Username:    "abc",
 					Password:    "nghia",
@@ -59,7 +60,7 @@ func TestUpdateUser(t *testing.T) {
 				},
 			},
 			givenInput: model.Users{
-				Id:          0,
+				Id:          100,
 				Name:        "nghia",
 				Username:    "abc",
 				Password:    "nghia",
@@ -71,7 +72,7 @@ func TestUpdateUser(t *testing.T) {
 				UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
 			},
 			expRs: model.Users{
-				Id:          0,
+				Id:          100,
 				Name:        "nghia",
 				Username:    "abc",
 				PhoneNumber: "123",
@@ -82,6 +83,60 @@ func TestUpdateUser(t *testing.T) {
 				UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
 			},
 		},
+		"fail: can't find userID": {
+			givenID: 200,
+			updateUser: updateUser{
+				mockID:   200,
+				mockResp: model.Users{},
+				mockErr:  errors.New("something error"),
+			},
+			givenInput: model.Users{
+				Id:          200,
+				Name:        "hai",
+				Username:    "abc",
+				Password:    "nghia",
+				PhoneNumber: "123",
+				Address:     "abc",
+				Age:         1,
+				Role:        "ADMIN",
+				CreatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+				UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+			},
+			expRs:  model.Users{},
+			expErr: errors.New("something error"),
+		},
+		// "fail: save error with age": {
+		// 	givenID: 300,
+		// 	updateUser: updateUser{
+		// 		mockID: 300,
+		// 		mockInput: model.Users{
+		// 			Id:          300,
+		// 			Name:        "nghia",
+		// 			Password:    "nghia",
+		// 			PhoneNumber: "123",
+		// 			Address:     "abc",
+		// 			Age:         123,
+		// 			Role:        "ADMIN",
+		// 			CreatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+		// 			UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+		// 		},
+		// 		mockResp: model.Users{},
+		// 		mockErr:  errors.New("something error"),
+		// 	},
+		// 	givenInput: model.Users{
+		// 		Id:          300,
+		// 		Name:        "nghia",
+		// 		Password:    "nghia",
+		// 		PhoneNumber: "123",
+		// 		Address:     "abc",
+		// 		Age:         123,
+		// 		Role:        "ADMIN",
+		// 		CreatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+		// 		UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
+		// 	},
+		// 	expRs:  model.Users{},
+		// 	expErr: errors.New("something error"),
+		// },
 	}
 
 	ctx := context.Background()

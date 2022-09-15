@@ -2,10 +2,13 @@ package user
 
 import (
 	"context"
+	"errors"
 	mocks "order-mg/internal/mocks/repository/user"
 	"order-mg/internal/model"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/mock"
 
 	"github.com/stretchr/testify/require"
 )
@@ -84,15 +87,17 @@ func TestGetUsers(t *testing.T) {
 				},
 			},
 		},
-		"empty result": {
+		"fail: empty result": {
 			givenLimit:  3,
 			givenLastID: 1,
 			getUsers: getUsers{
 				mockLimit: 3,
 				mockIn:    0,
 				mockResp:  []model.Users{},
+				mockErr:   errors.New("something wrong"),
 			},
-			expRs: []model.Users{},
+			expRs:  []model.Users{},
+			expErr: errors.New("something wrong"),
 		},
 		"success: last id": {
 			givenLimit:  3,
@@ -159,16 +164,17 @@ func TestGetUsers(t *testing.T) {
 		t.Run(s, func(t *testing.T) {
 			//GIVEN
 			instance := new(mocks.UserRepository)
-			instance.On("GetUsers", ctx, tc.givenLimit, tc.givenLastID).Return(tc.getUsers.mockResp, tc.getUsers.mockErr)
+			instance.On("GetUsers", mock.Anything, tc.givenLimit, tc.givenLastID).Return(tc.getUsers.mockResp, tc.getUsers.mockErr)
 
 			//WHEN
 			svc := New(instance)
 			rs, err := svc.GetUsers(ctx, tc.givenLimit, tc.givenLastID)
 
 			//THEN
-			if err != nil {
+			if tc.expErr != nil {
 				require.EqualError(t, err, tc.expErr.Error())
 			} else {
+				require.NoError(t, err)
 				require.Equal(t, tc.expRs, rs)
 			}
 		})

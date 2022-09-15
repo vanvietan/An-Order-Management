@@ -4,15 +4,16 @@ import (
 	"context"
 	"errors"
 	mocks "order-mg/internal/mocks/repository/user"
-	"order-mg/internal/model"
 	"testing"
+
+	"github.com/stretchr/testify/mock"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestDeleteUser(t *testing.T) {
 	type deleteUser struct {
-		mockIn     int64
+		mockID     int64
 		mockResult bool
 		mockErr    error
 	}
@@ -24,30 +25,20 @@ func TestDeleteUser(t *testing.T) {
 	}
 
 	tcs := map[string]arg{
-		"fail: userID invalid": {
-			givenID: 0,
-			deleteUser: deleteUser{
-				mockIn:     0,
-				mockResult: false,
-				mockErr:    errors.New("invalid userID"),
-			},
-			expResult: false,
-			expErr:    errors.New("invalid userID"),
-		},
 		"fail: id isn't existed": {
 			givenID: 200,
 			deleteUser: deleteUser{
-				mockIn:     200,
+				mockID:     200,
 				mockResult: false,
-				mockErr:    errors.New("userID is not existed"),
+				mockErr:    errors.New("can't delete a user"),
 			},
-			expResult: true,
-			expErr:    errors.New("userID is not existed"),
+			expResult: false,
+			expErr:    errors.New("can't delete a user"),
 		},
-		"success: delete success": {
+		"success: delete successful": {
 			givenID: 101,
 			deleteUser: deleteUser{
-				mockIn:     101,
+				mockID:     101,
 				mockResult: true,
 			},
 			expResult: true,
@@ -60,18 +51,17 @@ func TestDeleteUser(t *testing.T) {
 		t.Run(s, func(t *testing.T) {
 			//GIVEN
 			instance := new(mocks.UserRepository)
-			instance.On("GetUserByID", ctx, tc.deleteUser.mockIn).Return(model.Users{}, tc.deleteUser.mockErr)
-			instance.On("DeleteUser", ctx, tc.deleteUser.mockIn).Return(tc.deleteUser.mockResult, tc.deleteUser.mockErr)
+			instance.On("DeleteUser", mock.Anything, tc.deleteUser.mockID).Return(tc.deleteUser.mockResult, tc.deleteUser.mockErr)
 
 			//WHEN
 			svc := New(instance)
-			rs, err := svc.DeleteUser(ctx, tc.givenID)
+			err := svc.DeleteUser(ctx, tc.givenID)
 
 			//THEN
-			if err != nil {
+			if tc.expErr != nil {
 				require.EqualError(t, err, tc.expErr.Error())
 			} else {
-				require.Equal(t, tc.expResult, rs)
+				require.NoError(t, err)
 			}
 		})
 	}
