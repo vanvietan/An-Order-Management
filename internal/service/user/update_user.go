@@ -27,11 +27,11 @@ func (i impl) UpdateUser(ctx context.Context, input model.Users, userID int64) (
 	userF.Age = input.Age
 	userF.Role = input.Role
 
-	_, errU := i.userRepo.UpdateUser(ctx, userF)
+	userU, errU := i.userRepo.UpdateUser(ctx, userF)
 	if errU != nil {
 		log.Printf("error when save user, userId: %d", userF.Id)
 	}
 
-	userF.Password = ""
-	return userF, nil
+	userU.Password = ""
+	return userU, nil
 }
