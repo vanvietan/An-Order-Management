@@ -28,7 +28,7 @@ type impl struct {
 }
 
 // New
-func New(userRepo user.UserRepository) impl {
+func New(userRepo user.UserRepository) UserService {
 	return impl{
 		userRepo: userRepo,
 	}

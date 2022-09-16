@@ -29,7 +29,7 @@ type impl struct {
 	gormDB *gorm.DB
 }
 
-func New(gormDB *gorm.DB) impl {
+func New(gormDB *gorm.DB) UserRepository {
 	return impl{
 		gormDB: gormDB,
 	}
