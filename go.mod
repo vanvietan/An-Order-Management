@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/go-chi/chi v1.5.4
 	github.com/google/go-cmp v0.5.8
+	github.com/jarcoal/httpmock v1.2.0
 	github.com/sirupsen/logrus v1.4.2
 	github.com/sony/sonyflake v1.1.0
 	github.com/stretchr/testify v1.8.0

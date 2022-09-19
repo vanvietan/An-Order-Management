@@ -845,3 +845,15 @@ vendor/golang.org/x/sys/unix/zsyscall_openbsd_arm.s
 vendor/golang.org/x/sys/unix/zsyscall_openbsd_arm64.s
 vendor/golang.org/x/sys/unix/zsysnum_freebsd_riscv64.go
 vendor/golang.org/x/sys/unix/ztypes_freebsd_riscv64.go
+vendor/github.com/jarcoal/httpmock/any.go
+vendor/github.com/jarcoal/httpmock/doc.go
+vendor/github.com/jarcoal/httpmock/env.go
+vendor/github.com/jarcoal/httpmock/file.go
+vendor/github.com/jarcoal/httpmock/internal/error.go
+vendor/github.com/jarcoal/httpmock/internal/route_key.go
+vendor/github.com/jarcoal/httpmock/internal/stack_tracer.go
+vendor/github.com/jarcoal/httpmock/internal/submatches.go
+vendor/github.com/jarcoal/httpmock/LICENSE
+vendor/github.com/jarcoal/httpmock/README.md
+vendor/github.com/jarcoal/httpmock/response.go
+vendor/github.com/jarcoal/httpmock/transport.go
