@@ -22,5 +22,4 @@ func (h UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	common.ResponseJson(w, http.StatusOK, toGetAUserResponse(user))
-
 }
