@@ -15,19 +15,6 @@ import (
 )
 
 func TestGetUserByID(t *testing.T) {
-	/*
-		GET /users/{id}
-		NO BODY
-
-		need: id
-
-		expect:
-			+ http status code
-			+ resp
-
-		mock service
-
-	*/
 
 	type getUserByIDMock struct {
 		mockIn  int64

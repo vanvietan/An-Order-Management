@@ -16,15 +16,6 @@ import (
 )
 
 func TestUpdateUser(t *testing.T) {
-	/*
-		PUT /users
-		Have BODY
-
-		expect:
-			+http status code
-			+resp
-		mock service
-	*/
 
 	type updateUser struct {
 		mockID  int64
@@ -72,8 +63,8 @@ func TestUpdateUser(t *testing.T) {
 					Address:     "abc",
 					Age:         90,
 					Role:        "USER",
-					CreatedAt:   time.Date(0001, 01, 01, 0, 0, 0, 0, time.UTC),
-					UpdatedAt:   time.Date(0001, 01, 01, 0, 0, 0, 0, time.UTC),
+					CreatedAt:   time.Date(2022, 9, 21, 16, 30, 0, 0, time.UTC),
+					UpdatedAt:   time.Date(2022, 9, 21, 16, 30, 0, 0, time.UTC),
 				},
 			},
 			updateUserMockCalled: true,
@@ -85,13 +76,55 @@ func TestUpdateUser(t *testing.T) {
 				"address": "abc",
 				"age": 90,
 				"role": "USER",
-				"created_at": "0001-01-01T00:00:00Z",
-				"updated_at": "0001-01-01T00:00:00Z"
+				"created_at": "2022-09-21T16:30:00Z",
+				"updated_at": "2022-09-21T16:30:00Z"
 				}`,
 			expHTTPCode: http.StatusOK,
 		},
-		"fail: Body Invalid age Invalid ": {
-			givenID: "100",
+		"fail:invalid Body user name invalid": {
+			givenBody: `{
+				"name": "",
+				"username": "abc",
+				"password": "abc",
+				"phone_number": "0906312911",
+				"address": "abc",
+				"age": 90,
+				"role": "USER"
+				}`,
+			updateUserMockCalled: false,
+			expRs:                `{"code":"invalid request", "description":"invalid name"}`,
+			expHTTPCode:          http.StatusBadRequest,
+		},
+		"fail:invalid Body user password invalid": {
+			givenBody: `{
+				"name": "abc",
+				"username": "abc",
+				"password": "",
+				"phone_number": "0906312911",
+				"address": "abc",
+				"age": 90,
+				"role": "USER"
+				}`,
+			updateUserMockCalled: false,
+			expRs:                `{"code":"invalid request", "description":"password is invalid"}`,
+			expHTTPCode:          http.StatusBadRequest,
+		},
+		"fail:invalid Body user address invalid": {
+			givenBody: `{
+				"name": "abc",
+				"username": "abc",
+				"password": "abc",
+				"phone_number": "0906312911",
+				"address": "",
+				"age": 90,
+				"role": "USER"
+				}`,
+			updateUserMockCalled: false,
+			expRs:                `{"code":"invalid request", "description":"address is invalid"}`,
+			expHTTPCode:          http.StatusBadRequest,
+		},
+
+		"fail:invalid Body user age invalid": {
 			givenBody: `{
 				"name": "abc",
 				"username": "abc",
@@ -103,6 +136,34 @@ func TestUpdateUser(t *testing.T) {
 				}`,
 			updateUserMockCalled: false,
 			expRs:                `{"code":"invalid request", "description":"user age is invalid"}`,
+			expHTTPCode:          http.StatusBadRequest,
+		},
+		"fail:invalid Body user phone number invalid": {
+			givenBody: `{
+				"name": "abc",
+				"username": "abc",
+				"password": "abc",
+				"phone_number": "xyz",
+				"address": "abc",
+				"age": 90,
+				"role": "USER"
+				}`,
+			updateUserMockCalled: false,
+			expRs:                `{"code":"invalid request", "description":"phone number is invalid"}`,
+			expHTTPCode:          http.StatusBadRequest,
+		},
+		"fail:invalid Body user role invalid": {
+			givenBody: `{
+				"name": "abc",
+				"username": "abc",
+				"password": "abc",
+				"phone_number": "0906312911",
+				"address": "abc",
+				"age": 90,
+				"role": "PRESIDENT"
+				}`,
+			updateUserMockCalled: false,
+			expRs:                `{"code":"invalid request", "description":"user role is invalid"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
 		"fail: userID invalid ": {
@@ -120,7 +181,7 @@ func TestUpdateUser(t *testing.T) {
 			expRs:                `{"code":"invalid_request", "description":"id must be a number"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
-		"fail: username duplicated": {
+		"fail: error from service": {
 			givenID: "100",
 			givenBody: `{
 				"name": "abc",

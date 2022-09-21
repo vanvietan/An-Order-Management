@@ -13,15 +13,6 @@ import (
 )
 
 func TestDeleteUser(t *testing.T) {
-	/*
-		DELETE /users/{id}
-		NO BODY
-		need: id
-		expect:
-			+ http status code
-			+ resp
-		mock service
-	*/
 
 	type deleteUser struct {
 		mockIn  int64
@@ -38,18 +29,14 @@ func TestDeleteUser(t *testing.T) {
 		"success: ": {
 			givenID: "123",
 			deleteUser: deleteUser{
-				mockIn:  123,
-				mockErr: nil,
+				mockIn: 123,
 			},
 			deleteUserMockCalled: true,
 			expHTTPCode:          http.StatusOK,
 			expRs:                `{"message":"Deleted User"}`,
 		},
 		"fail: invalid ID": {
-			givenID: "abc",
-			deleteUser: deleteUser{
-				mockErr: errors.New("something wrong"),
-			},
+			givenID:              "abc",
 			deleteUserMockCalled: false,
 			expHTTPCode:          http.StatusBadRequest,
 			expRs:                `{"code":"invalid_request", "description":"id must be a number"}`,

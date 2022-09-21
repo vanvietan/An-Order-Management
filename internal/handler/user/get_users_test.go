@@ -14,17 +14,6 @@ import (
 )
 
 func TestGetUsers(t *testing.T) {
-	/*
-		GET /users
-		NOBODY
-
-		need: cursor , limit
-
-		expect:
-			+http status code
-			+resp
-		mock service
-	*/
 
 	type getUsers struct {
 		mockLimit  int
