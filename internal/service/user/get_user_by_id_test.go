@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -77,7 +78,7 @@ func TestGetUserByID(t *testing.T) {
 		t.Run(s, func(t *testing.T) {
 			//GIVEN
 			instance := new(mocks.UserRepository)
-			instance.On("GetUserByID", ctx, tc.getUserByID.mockIn).Return(tc.getUserByID.mockResp, tc.getUserByID.mockErr)
+			instance.On("GetUserByID", mock.Anything, tc.getUserByID.mockIn).Return(tc.getUserByID.mockResp, tc.getUserByID.mockErr)
 
 			//WHEN
 			svc := New(instance)
