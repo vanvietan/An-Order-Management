@@ -11,10 +11,7 @@ import (
 	"order-mg/internal/util"
 
 	"github.com/go-chi/chi"
-	"github.com/sony/sonyflake"
 )
-
-var sf *sonyflake.Sonyflake
 
 func main() {
 	port := ":3000"

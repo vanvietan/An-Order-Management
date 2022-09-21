@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"fmt"
 	"github.com/go-chi/chi"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
@@ -17,7 +16,7 @@ import (
 func TestGetUsers(t *testing.T) {
 	/*
 		GET /users
-		NO BODY
+		NOBODY
 
 		need: cursor , limit
 
@@ -34,12 +33,12 @@ func TestGetUsers(t *testing.T) {
 		mockErr    error
 	}
 	type arg struct {
-		givenLimit            string
-		givenCursor           string
-		getUsers              getUsers
-		getUserByIDMockCalled bool
-		expRs                 string
-		expHTTPCode           int
+		givenLimit         string
+		givenCursor        string
+		getUsers           getUsers
+		getUsersMockCalled bool
+		expRs              string
+		expHTTPCode        int
 	}
 
 	tcs := map[string]arg{
@@ -75,54 +74,78 @@ func TestGetUsers(t *testing.T) {
 				},
 			},
 			expRs: `{
-					"users": [
-						{
-							"id": 101,
-							  "name": "abc",
-							  "username": "abc1",
-							  "phone_number": "123",
-							  "address": "abc",
-							  "age": 1,
-							  "role": "ADMIN",
-							  "created_at": "2022-09-20T11:00:00Z",
-							  "updated_at": "2022-09-20T11:00:00Z"
-						},
-						{
-							"id": 100,
-							  "name": "abc",
-							  "username": "abc",
-							  "phone_number": "123",
-							  "address": "abc",
-							  "age": 1,
-							  "role": "ADMIN",
-							  "created_at": "2022-09-20T11:00:00Z",
-							  "updated_at": "2022-09-20T11:00:00Z"
-						}	
-					],
-					"cursor": 100
-						}`,
-			getUserByIDMockCalled: true,
-			expHTTPCode:           http.StatusOK,
+						"users": [
+							{
+								"id": 101,
+								  "name": "abc",
+								  "username": "abc1",
+								  "phone_number": "123",
+								  "address": "abc",
+								  "age": 1,
+								  "role": "ADMIN",
+								  "created_at": "2022-09-20T11:00:00Z",
+								  "updated_at": "2022-09-20T11:00:00Z"
+							},
+							{
+								"id": 100,
+								  "name": "abc",
+								  "username": "abc",
+								  "phone_number": "123",
+								  "address": "abc",
+								  "age": 1,
+								  "role": "ADMIN",
+								  "created_at": "2022-09-20T11:00:00Z",
+								  "updated_at": "2022-09-20T11:00:00Z"
+							}	
+						],
+						"cursor": 100
+					}`,
+			getUsersMockCalled: true,
+			expHTTPCode:        http.StatusOK,
+		},
+		"fail: invalid limit": {
+			givenLimit:         "abc",
+			givenCursor:        "0",
+			getUsersMockCalled: false,
+			expRs:              `{"code":"invalid_request", "description":"limit must be a number"}`,
+			expHTTPCode:        http.StatusBadRequest,
+		},
+		"fail: invalid lastID": {
+			givenLimit:         "20",
+			givenCursor:        "abc",
+			getUsersMockCalled: false,
+			expRs:              `{"code":"invalid_request", "description":"cursor must be a number"}`,
+			expHTTPCode:        http.StatusBadRequest,
+		},
+		"success: empty ": {
+			givenLimit:         "3",
+			givenCursor:        "1",
+			getUsersMockCalled: true,
+			getUsers: getUsers{
+				mockLimit:  3,
+				mockCursor: 1,
+				mockOut:    []model.Users{},
+				mockErr:    nil,
+			},
+			expRs:       `{"users":null,"cursor":0}`,
+			expHTTPCode: http.StatusOK,
 		},
 	}
+
 	for s, tc := range tcs {
 		t.Run(s, func(t *testing.T) {
 			//MOCK
 			mockSvc := new(mocks.UserService)
-			if tc.getUserByIDMockCalled {
+			if tc.getUsersMockCalled {
 				mockSvc.ExpectedCalls = []*mock.Call{
 					mockSvc.On("GetUsers", mock.Anything, tc.getUsers.mockLimit, tc.getUsers.mockCursor).
 						Return(tc.getUsers.mockOut, tc.getUsers.mockErr),
 				}
 			}
 			//GIVEN
-			req := httptest.NewRequest(http.MethodGet, "/users", nil)
+			path := "/users" + "?limit=" + tc.givenLimit + "&cursor=" + tc.givenCursor
+			req := httptest.NewRequest(http.MethodGet, path, nil)
 			routeCtx := chi.NewRouteContext()
-			req.URL.Query().Add("limit", tc.givenLimit)
-			req.URL.Query().Add("cursor", tc.givenCursor)
-			
-			fmt.Println(req.Context().Value("limit"))
-
 			ctx := context.WithValue(req.Context(), chi.RouteCtxKey, routeCtx)
 			req = req.WithContext(ctx)
 			res := httptest.NewRecorder()
@@ -132,7 +155,7 @@ func TestGetUsers(t *testing.T) {
 			instance.GetUsers(res, req)
 
 			//THEN
-			//require.Equal(t, tc.expHTTPCode, res.Code)
+			require.Equal(t, tc.expHTTPCode, res.Code)
 			require.JSONEq(t, tc.expRs, res.Body.String())
 			mockSvc.AssertExpectations(t)
 		})

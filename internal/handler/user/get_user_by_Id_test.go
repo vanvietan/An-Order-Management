@@ -107,6 +107,7 @@ func TestGetUserByID(t *testing.T) {
 			req := httptest.NewRequest(http.MethodGet, "/users/", nil)
 			routeCtx := chi.NewRouteContext()
 			routeCtx.URLParams.Add("id", tc.givenID)
+
 			ctx := context.WithValue(req.Context(), chi.RouteCtxKey, routeCtx)
 			req = req.WithContext(ctx)
 			res := httptest.NewRecorder()
