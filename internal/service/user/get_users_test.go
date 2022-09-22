@@ -92,7 +92,7 @@ func TestGetUsers(t *testing.T) {
 			givenLastID: 1,
 			getUsers: getUsers{
 				mockLimit: 3,
-				mockIn:    0,
+				mockIn:    1,
 				mockResp:  []model.Users{},
 				mockErr:   errors.New("something wrong"),
 			},
