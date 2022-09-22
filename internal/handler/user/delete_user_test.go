@@ -41,7 +41,7 @@ func TestDeleteUser(t *testing.T) {
 			expHTTPCode:          http.StatusBadRequest,
 			expRs:                `{"code":"invalid_request", "description":"id must be a number"}`,
 		},
-		"fail: cannot find a user to delete": {
+		"fail: error from service": {
 			givenID: "123",
 			deleteUser: deleteUser{
 				mockIn:  123,

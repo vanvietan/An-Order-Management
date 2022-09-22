@@ -67,7 +67,7 @@ func TestGetUserByID(t *testing.T) {
 			expRs:                 `{"code":"invalid_request", "description":"id must be a number"}`,
 			expHTTPCode:           http.StatusBadRequest,
 		},
-		"fail: can't find userID": {
+		"fail: error from service": {
 			givenID:               "103",
 			getUserByIDMockCalled: true,
 			getUserByIDMock: getUserByIDMock{
