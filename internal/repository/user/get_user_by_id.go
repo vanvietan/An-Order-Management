@@ -5,7 +5,7 @@ import (
 	"order-mg/internal/model"
 )
 
-// GetUserById: find a user by its id
+// GetUserByID find a user by its id
 func (i impl) GetUserByID(ctx context.Context, userID int64) (model.Users, error) {
 	user := model.Users{}
 	tx := i.gormDB.First(&user, userID)

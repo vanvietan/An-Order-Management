@@ -20,7 +20,7 @@ func TestGetUsers(t *testing.T) {
 	}
 
 	tcs := map[string]arg{
-		"success: empty last id": {
+		"success: gets all": {
 			givenLimit:  3,
 			givenLastID: 0,
 			expResult: []model.Users{
@@ -48,6 +48,18 @@ func TestGetUsers(t *testing.T) {
 					CreatedAt:   time.Date(2022, 3, 15, 15, 0, 0, 0, time.UTC),
 					UpdatedAt:   time.Date(2022, 3, 15, 15, 0, 0, 0, time.UTC),
 				},
+				{
+					Id:          99,
+					Name:        "nghia",
+					Username:    "nghia",
+					Password:    "nghia",
+					PhoneNumber: "123",
+					Address:     "nghia",
+					Age:         1,
+					Role:        "USER",
+					CreatedAt:   time.Date(2022, 3, 14, 14, 0, 0, 0, time.UTC),
+					UpdatedAt:   time.Date(2022, 3, 14, 14, 0, 0, 0, time.UTC),
+				},
 			},
 		},
 		"empty result": {
@@ -57,20 +69,8 @@ func TestGetUsers(t *testing.T) {
 		},
 		"success: last id": {
 			givenLimit:  3,
-			givenLastID: 200,
+			givenLastID: 101,
 			expResult: []model.Users{
-				{
-					Id:          101,
-					Name:        "abc",
-					Username:    "abc1",
-					Password:    "abc",
-					PhoneNumber: "123",
-					Address:     "abc",
-					Age:         1,
-					Role:        "ADMIN",
-					CreatedAt:   time.Date(2022, 3, 15, 16, 0, 0, 0, time.UTC),
-					UpdatedAt:   time.Date(2022, 3, 15, 16, 0, 0, 0, time.UTC),
-				},
 				{
 					Id:          100,
 					Name:        "abc",
@@ -82,6 +82,18 @@ func TestGetUsers(t *testing.T) {
 					Role:        "ADMIN",
 					CreatedAt:   time.Date(2022, 3, 15, 15, 0, 0, 0, time.UTC),
 					UpdatedAt:   time.Date(2022, 3, 15, 15, 0, 0, 0, time.UTC),
+				},
+				{
+					Id:          99,
+					Name:        "nghia",
+					Username:    "nghia",
+					Password:    "nghia",
+					PhoneNumber: "123",
+					Address:     "nghia",
+					Age:         1,
+					Role:        "USER",
+					CreatedAt:   time.Date(2022, 3, 14, 14, 0, 0, 0, time.UTC),
+					UpdatedAt:   time.Date(2022, 3, 14, 14, 0, 0, 0, time.UTC),
 				},
 			},
 		},
