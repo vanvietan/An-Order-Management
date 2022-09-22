@@ -12,7 +12,7 @@ type UserRepository interface {
 	// GetUsers get all users
 	GetUsers(ctx context.Context, limit int, lastID int64) ([]model.Users, error)
 
-	//GetUserById: find a user by its id
+	//GetUserByID find a user by its id
 	GetUserByID(ctx context.Context, userID int64) (model.Users, error)
 
 	// CreateUser create a user

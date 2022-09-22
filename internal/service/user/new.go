@@ -6,7 +6,7 @@ import (
 	"order-mg/internal/repository/user"
 )
 
-// UserService: handle all user service busineess
+// UserService handle all user service business
 type UserService interface {
 	//GetUsers get all users
 	GetUsers(ctx context.Context, limit int, lastID int64) ([]model.Users, error)
