@@ -105,38 +105,6 @@ func TestUpdateUser(t *testing.T) {
 			expRs:  model.Users{},
 			expErr: errors.New("something error"),
 		},
-		// "fail: save error with age": {
-		// 	givenID: 300,
-		// 	updateUser: updateUser{
-		// 		mockID: 300,
-		// 		mockInput: model.Users{
-		// 			Id:          300,
-		// 			Name:        "nghia",
-		// 			Password:    "nghia",
-		// 			PhoneNumber: "123",
-		// 			Address:     "abc",
-		// 			Age:         123,
-		// 			Role:        "ADMIN",
-		// 			CreatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
-		// 			UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
-		// 		},
-		// 		mockResp: model.Users{},
-		// 		mockErr:  errors.New("something error"),
-		// 	},
-		// 	givenInput: model.Users{
-		// 		Id:          300,
-		// 		Name:        "nghia",
-		// 		Password:    "nghia",
-		// 		PhoneNumber: "123",
-		// 		Address:     "abc",
-		// 		Age:         123,
-		// 		Role:        "ADMIN",
-		// 		CreatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
-		// 		UpdatedAt:   time.Date(2022, 4, 15, 16, 0, 0, 0, time.UTC),
-		// 	},
-		// 	expRs:  model.Users{},
-		// 	expErr: errors.New("something error"),
-		// },
 	}
 
 	ctx := context.Background()

@@ -11,6 +11,7 @@ func (i impl) GetOrderByID(ctx context.Context, orderID int64) (model.Order, err
 	order, err := i.orderRepo.GetOrderByID(ctx, orderID)
 	if err != nil {
 		log.Printf("error when get order by id , orderID: %d", orderID)
+		return model.Order{}, err
 	}
 	return order, nil
 }
