@@ -29,8 +29,8 @@ type AUserResponse struct {
 	Role        model.Role      `json:"role"` //Enums Role
 	CreatedAt   time.Time       `json:"created_at"`
 	UpdatedAt   time.Time       `json:"updated_at"`
-	Orders      []model.Order   `json:"Orders,omitempty"`
-	Histories   []model.History `json:"Histories,omitempty"`
+	Orders      []model.Order   `json:"orders,omitempty"`
+	Histories   []model.History `json:"histories,omitempty"`
 }
 
 func (c CreateUserInput) validateAndMap() (model.Users, error) {

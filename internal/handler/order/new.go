@@ -1,8 +1,6 @@
 package order
 
-import (
-	"order-mg/internal/service/order"
-)
+import "order-mg/internal/service/order"
 
 // OrderHandler
 type OrderHandler struct {
