@@ -23,5 +23,6 @@ func (i impl) CreateOrder(ctx context.Context, input model.Order) (model.Order, 
 		log.Printf("error when create an order: %+v", input)
 		return model.Order{}, errO
 	}
+
 	return order, nil
 }

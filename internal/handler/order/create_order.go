@@ -7,6 +7,7 @@ import (
 	"order-mg/internal/model"
 )
 
+// CreateOrder create an order
 func (h OrderHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 	reqBody, err := checkValidate(r)
 	if err != nil {

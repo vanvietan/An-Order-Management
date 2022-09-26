@@ -16,7 +16,7 @@ const (
 
 const (
 	StatusApproved        Status = "APPROVED"
-	StatusAprrovalPending Status = "APPROVAL_PENDING"
+	StatusApprovalPending Status = "APPROVAL_PENDING"
 	StatusShipping        Status = "SHIPPING"
 	StatusShipped         Status = "SHIPPED"
 )

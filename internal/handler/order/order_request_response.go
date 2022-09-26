@@ -10,24 +10,21 @@ import (
 
 // CreateOrderInput input from clients
 type CreateOrderInput struct {
-	//Id            int64           `json:"id"`
-	Name          string          `json:"name"`
-	Description   string          `json:"description"`
-	TotalPrice    int32           `json:"total_price"`
-	Quantity      int             `json:"quantity"`
-	Discount      int8            `json:"discount"`
-	Shipping      string          `json:"shipping"`
-	Status        model.Status    `json:"status"` // Enums Status
-	UserId        int64           `json:"userId"`
-	DatePurchased time.Time       `json:"date_purchased"`
-	CreatedAt     time.Time       `json:"created_at" `
-	UpdatedAt     time.Time       `json:"updated_at"`
-	DeletedAt     gorm.DeletedAt  `json:"deleted_at"`
-	Histories     []model.History `json:"histories,omitempty"`
+	Name          string         `json:"name"`
+	Description   string         `json:"description"`
+	TotalPrice    int32          `json:"total_price"`
+	Quantity      int            `json:"quantity"`
+	Discount      int8           `json:"discount"`
+	Shipping      string         `json:"shipping"`
+	Status        model.Status   `json:"status"` // Enums Status
+	UserId        int64          `json:"userID"`
+	DatePurchased time.Time      `json:"date_purchased"`
+	DeletedAt     gorm.DeletedAt `json:"deleted_at"`
 }
 
+// AnOrderResponse output from client
 type AnOrderResponse struct {
-	Id            int64           `json:"id"`
+	Id            int64           `json:"ID"`
 	Name          string          `json:"name"`
 	Description   string          `json:"description"`
 	TotalPrice    int32           `json:"total_price"`
@@ -35,11 +32,10 @@ type AnOrderResponse struct {
 	Discount      int8            `json:"discount"`
 	Shipping      string          `json:"shipping"`
 	Status        model.Status    `json:"status"` // Enums Status
-	UserId        int64           `json:"userId"`
+	UserId        int64           `json:"userID"`
 	DatePurchased time.Time       `json:"date_purchased"`
 	CreatedAt     time.Time       `json:"created_at" `
 	UpdatedAt     time.Time       `json:"updated_at"`
-	DeletedAt     gorm.DeletedAt  `json:"deleted_at"`
 	Histories     []model.History `json:"histories,omitempty"`
 }
 
@@ -57,7 +53,6 @@ func toGetAnOrderResponse(order model.Order) AnOrderResponse {
 		DatePurchased: order.DatePurchased,
 		CreatedAt:     order.CreatedAt,
 		UpdatedAt:     order.UpdatedAt,
-		DeletedAt:     order.DeletedAt,
 		Histories:     order.Histories,
 	}
 }
@@ -84,6 +79,11 @@ func (c CreateOrderInput) validateAndMap() (model.Order, error) {
 	if c.Status == "" {
 		return model.Order{}, errors.New("invalid status")
 	}
+	err := validStatus(c.Status)
+	if err != nil {
+		return model.Order{}, err
+	}
+
 	if c.UserId <= 0 || c.UserId > math.MaxInt64 {
 		return model.Order{}, errors.New("invalid userID")
 	}
@@ -99,4 +99,20 @@ func (c CreateOrderInput) validateAndMap() (model.Order, error) {
 		UserId:        c.UserId,
 		DatePurchased: c.DatePurchased,
 	}, nil
+}
+func validStatus(s model.Status) error {
+	if s == model.StatusApproved {
+		return nil
+	}
+	if s == model.StatusApprovalPending {
+		return nil
+	}
+	if s == model.StatusShipping {
+		return nil
+	}
+	if s == model.StatusShipped {
+		return nil
+	}
+
+	return errors.New("invalid status")
 }
