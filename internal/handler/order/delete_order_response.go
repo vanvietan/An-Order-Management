@@ -1,7 +1,7 @@
 package order
 
 type deleteOrderResponse struct {
-	Message string
+	Message string `json:"message"`
 }
 
 func toSuccessDelete() deleteOrderResponse {

@@ -12,7 +12,7 @@ func (h UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	reqBody, errs := checkValidate(r)
 	if errs != nil {
 		common.ResponseJson(w, http.StatusBadRequest, common.CommonErrorResponse{
-			Code:        "invalid request",
+			Code:        "invalid_request",
 			Description: errs.Error(),
 		})
 		return

@@ -7,7 +7,7 @@ import (
 
 // Order with entity related to order when user buy it
 type Order struct {
-	Id            int64          `json:"ID"`
+	Id            int64          `json:"id"`
 	Name          string         `json:"name"`
 	Description   string         `json:"description"`
 	TotalPrice    int32          `json:"total_price"`

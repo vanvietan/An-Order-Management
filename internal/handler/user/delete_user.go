@@ -37,10 +37,10 @@ func toSuccessDelete() deleteUserResponse {
 func validateIDAndMap(r *http.Request) (int64, error) {
 	ID, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
-		return 0, errors.New("ID must be a number")
+		return 0, errors.New("id must be a number")
 	}
 	if ID <= 0 || ID > math.MaxInt64 {
-		return 0, errors.New("invalid ID")
+		return 0, errors.New("invalid id")
 	}
 
 	return ID, nil

@@ -12,7 +12,7 @@ func (h OrderHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 	reqBody, err := checkValidate(r)
 	if err != nil {
 		common.ResponseJson(w, http.StatusBadRequest, common.CommonErrorResponse{
-			Code:        "invalid request",
+			Code:        "invalid_request",
 			Description: err.Error(),
 		})
 		return
