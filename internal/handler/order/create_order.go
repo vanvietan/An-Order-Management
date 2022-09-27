@@ -27,7 +27,9 @@ func (h OrderHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 
 func checkValidate(r *http.Request) (model.Order, error) {
 	var input CreateOrderInput
-	_ = json.NewDecoder(r.Body).Decode(&input)
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		return model.Order{}, err
+	}
 	svcInput, err := input.validateAndMap()
 	if err != nil {
 		return model.Order{}, err
