@@ -88,7 +88,7 @@ func TestCreateUser(t *testing.T) {
 				"role": "USER"
 				}`,
 			createUserMockCalled: false,
-			expRs:                `{"code":"invalid request", "description":"invalid name"}`,
+			expRs:                `{"code":"invalid_request", "description":"invalid name"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
 		"fail:invalid Body user username invalid": {
@@ -102,7 +102,7 @@ func TestCreateUser(t *testing.T) {
 				"role": "USER"
 				}`,
 			createUserMockCalled: false,
-			expRs:                `{"code":"invalid request", "description":"invalid username"}`,
+			expRs:                `{"code":"invalid_request", "description":"invalid username"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
 		"fail:invalid Body user password invalid": {
@@ -116,7 +116,7 @@ func TestCreateUser(t *testing.T) {
 				"role": "USER"
 				}`,
 			createUserMockCalled: false,
-			expRs:                `{"code":"invalid request", "description":"password is invalid"}`,
+			expRs:                `{"code":"invalid_request", "description":"password is invalid"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
 		"fail:invalid Body user address invalid": {
@@ -130,7 +130,7 @@ func TestCreateUser(t *testing.T) {
 				"role": "USER"
 				}`,
 			createUserMockCalled: false,
-			expRs:                `{"code":"invalid request", "description":"address is invalid"}`,
+			expRs:                `{"code":"invalid_request", "description":"address is invalid"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
 
@@ -145,7 +145,7 @@ func TestCreateUser(t *testing.T) {
 				"role": "USER"
 				}`,
 			createUserMockCalled: false,
-			expRs:                `{"code":"invalid request", "description":"user age is invalid"}`,
+			expRs:                `{"code":"invalid_request", "description":"user age is invalid"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
 		"fail:invalid Body user phone number invalid": {
@@ -159,7 +159,7 @@ func TestCreateUser(t *testing.T) {
 				"role": "USER"
 				}`,
 			createUserMockCalled: false,
-			expRs:                `{"code":"invalid request", "description":"phone number is invalid"}`,
+			expRs:                `{"code":"invalid_request", "description":"phone number is invalid"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
 		"fail:invalid Body user role invalid": {
@@ -173,7 +173,7 @@ func TestCreateUser(t *testing.T) {
 				"role": "PRESIDENT"
 				}`,
 			createUserMockCalled: false,
-			expRs:                `{"code":"invalid request", "description":"user role is invalid"}`,
+			expRs:                `{"code":"invalid_request", "description":"user role is invalid"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
 		"fail: error from service": {

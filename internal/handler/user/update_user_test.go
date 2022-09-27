@@ -92,7 +92,7 @@ func TestUpdateUser(t *testing.T) {
 				"role": "USER"
 				}`,
 			updateUserMockCalled: false,
-			expRs:                `{"code":"invalid request", "description":"invalid name"}`,
+			expRs:                `{"code":"invalid_request", "description":"invalid name"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
 		"fail:invalid Body user password invalid": {
@@ -106,7 +106,7 @@ func TestUpdateUser(t *testing.T) {
 				"role": "USER"
 				}`,
 			updateUserMockCalled: false,
-			expRs:                `{"code":"invalid request", "description":"password is invalid"}`,
+			expRs:                `{"code":"invalid_request", "description":"password is invalid"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
 		"fail:invalid Body user address invalid": {
@@ -120,7 +120,7 @@ func TestUpdateUser(t *testing.T) {
 				"role": "USER"
 				}`,
 			updateUserMockCalled: false,
-			expRs:                `{"code":"invalid request", "description":"address is invalid"}`,
+			expRs:                `{"code":"invalid_request", "description":"address is invalid"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
 
@@ -135,7 +135,7 @@ func TestUpdateUser(t *testing.T) {
 				"role": "USER"
 				}`,
 			updateUserMockCalled: false,
-			expRs:                `{"code":"invalid request", "description":"user age is invalid"}`,
+			expRs:                `{"code":"invalid_request", "description":"user age is invalid"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
 		"fail:invalid Body user phone number invalid": {
@@ -149,7 +149,7 @@ func TestUpdateUser(t *testing.T) {
 				"role": "USER"
 				}`,
 			updateUserMockCalled: false,
-			expRs:                `{"code":"invalid request", "description":"phone number is invalid"}`,
+			expRs:                `{"code":"invalid_request", "description":"phone number is invalid"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
 		"fail:invalid Body user role invalid": {
@@ -163,7 +163,7 @@ func TestUpdateUser(t *testing.T) {
 				"role": "PRESIDENT"
 				}`,
 			updateUserMockCalled: false,
-			expRs:                `{"code":"invalid request", "description":"user role is invalid"}`,
+			expRs:                `{"code":"invalid_request", "description":"user role is invalid"}`,
 			expHTTPCode:          http.StatusBadRequest,
 		},
 		"fail: userID invalid ": {

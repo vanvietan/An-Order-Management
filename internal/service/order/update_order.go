@@ -23,9 +23,10 @@ func (i impl) UpdateOrder(ctx context.Context, input model.Order, orderID int64)
 	orderF.Status = input.Status
 	orderF.UserId = input.UserId
 
-	orderU, errU := i.orderRepo.UpdateOrder(ctx, orderF)
-	if errU != nil {
+	orderU, err := i.orderRepo.UpdateOrder(ctx, orderF)
+	if err != nil {
 		log.Printf("error when save order %+v", input)
+		return model.Order{}, err
 	}
 	return orderU, nil
 }

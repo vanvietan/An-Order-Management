@@ -7,11 +7,12 @@ import (
 	"order-mg/internal/model"
 )
 
+// CreateOrder create an order
 func (h OrderHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 	reqBody, err := checkValidate(r)
 	if err != nil {
 		common.ResponseJson(w, http.StatusBadRequest, common.CommonErrorResponse{
-			Code:        "invalid request",
+			Code:        "invalid_request",
 			Description: err.Error(),
 		})
 		return
@@ -26,7 +27,9 @@ func (h OrderHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 
 func checkValidate(r *http.Request) (model.Order, error) {
 	var input CreateOrderInput
-	_ = json.NewDecoder(r.Body).Decode(&input)
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		return model.Order{}, err
+	}
 	svcInput, err := input.validateAndMap()
 	if err != nil {
 		return model.Order{}, err

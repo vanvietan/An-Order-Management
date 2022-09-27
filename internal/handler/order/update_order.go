@@ -1,19 +1,17 @@
-package user
+package order
 
 import (
 	"errors"
+	"github.com/go-chi/chi"
 	"math"
 	"net/http"
 	"order-mg/internal/handler/common"
 	"strconv"
-
-	"github.com/go-chi/chi"
 )
 
-// DeleteUser delete a user
-func (h UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
-
-	userID, err := validateIDAndMap(r)
+// UpdateOrder update an order
+func (h OrderHandler) UpdateOrder(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := checkValidate(r)
 	if err != nil {
 		common.ResponseJson(w, http.StatusBadRequest, common.CommonErrorResponse{
 			Code:        "invalid_request",
@@ -21,19 +19,23 @@ func (h UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-	errD := h.UserSvc.DeleteUser(r.Context(), userID)
-	if errD != nil {
+	orderID, errI := validateIDAndMap(r)
+	if errI != nil {
+		common.ResponseJson(w, http.StatusBadRequest, common.CommonErrorResponse{
+			Code:        "invalid_request",
+			Description: errI.Error(),
+		})
+		return
+	}
+	orderUpdated, errH := h.OrderSvc.UpdateOrder(r.Context(), reqBody, orderID)
+	if errH != nil {
 		common.ResponseJson(w, http.StatusInternalServerError, common.InternalCommonErrorResponse)
 		return
 	}
 
-	common.ResponseJson(w, http.StatusOK, toSuccessDelete())
+	common.ResponseJson(w, http.StatusOK, toGetAnOrderResponse(orderUpdated))
 }
-func toSuccessDelete() deleteUserResponse {
-	return deleteUserResponse{
-		Message: "Deleted User",
-	}
-}
+
 func validateIDAndMap(r *http.Request) (int64, error) {
 	ID, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
@@ -42,6 +44,5 @@ func validateIDAndMap(r *http.Request) (int64, error) {
 	if ID <= 0 || ID > math.MaxInt64 {
 		return 0, errors.New("invalid id")
 	}
-
 	return ID, nil
 }

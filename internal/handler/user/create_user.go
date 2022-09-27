@@ -12,7 +12,7 @@ func (h UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	reqBody, err := checkValidate(r)
 	if err != nil {
 		common.ResponseJson(w, http.StatusBadRequest, common.CommonErrorResponse{
-			Code:        "invalid request",
+			Code:        "invalid_request",
 			Description: err.Error(),
 		})
 		return
@@ -28,7 +28,9 @@ func (h UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 func checkValidate(r *http.Request) (model.Users, error) {
 	var input CreateUserInput
-	_ = json.NewDecoder(r.Body).Decode(&input)
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		return model.Users{}, err
+	}
 	svcInput, err := input.validateAndMap()
 	if err != nil {
 		return model.Users{}, err

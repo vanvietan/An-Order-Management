@@ -6,7 +6,9 @@ import (
 	"net/http"
 	"order-mg/cmd/served/router"
 	"order-mg/db"
+	orderRepo "order-mg/internal/repository/order"
 	userRepo "order-mg/internal/repository/user"
+	orderSvc "order-mg/internal/service/order"
 	userSvc "order-mg/internal/service/user"
 	"order-mg/internal/util"
 
@@ -38,8 +40,10 @@ func main() {
 
 	userRepo := userRepo.New(dbConn)
 	userSvc := userSvc.New(userRepo)
+	orderRepo := orderRepo.New(dbConn)
+	orderSvc := orderSvc.New(orderRepo)
 
-	router.New(r, userSvc)
+	router.New(r, userSvc, orderSvc)
 
 	fmt.Println("Serving on " + port)
 	http.ListenAndServe(port, r)
