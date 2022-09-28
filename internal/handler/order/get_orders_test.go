@@ -95,8 +95,7 @@ func TestGetOrders(t *testing.T) {
 							"userID": 101,
 							"date_purchased": "2022-03-16T00:00:00Z",
 							"created_at": "2022-03-16T16:00:00Z",
-							"updated_at": "2022-03-16T16:00:00Z",
-							"deleted_at": null
+							"updated_at": "2022-03-16T16:00:00Z"
 						},
 						{
 							"id": 100,
@@ -110,8 +109,7 @@ func TestGetOrders(t *testing.T) {
 							"userID": 100,
 							"date_purchased": "2022-03-15T00:00:00Z",
 							"created_at": "2022-03-15T15:00:00Z",
-							"updated_at": "2022-03-15T15:00:00Z",
-							"deleted_at": null
+							"updated_at": "2022-03-15T15:00:00Z"
 						},
 						{
 							"id": 99,
@@ -125,8 +123,7 @@ func TestGetOrders(t *testing.T) {
 							"userID": 99,
 							"date_purchased": "2022-03-14T00:00:00Z",
 							"created_at": "2022-03-14T14:00:00Z",
-							"updated_at": "2022-03-14T14:00:00Z",
-							"deleted_at": null
+							"updated_at": "2022-03-14T14:00:00Z"
 						}
 					],
 					"cursor": 99
@@ -185,8 +182,7 @@ func TestGetOrders(t *testing.T) {
 							"userID": 101,
 							"date_purchased": "2022-03-16T00:00:00Z",
 							"created_at": "2022-03-16T16:00:00Z",
-							"updated_at": "2022-03-16T16:00:00Z",
-							"deleted_at": null
+							"updated_at": "2022-03-16T16:00:00Z"
 						},
 						{
 							"id": 100,
@@ -200,8 +196,7 @@ func TestGetOrders(t *testing.T) {
 							"userID": 100,
 							"date_purchased": "2022-03-15T00:00:00Z",
 							"created_at": "2022-03-15T15:00:00Z",
-							"updated_at": "2022-03-15T15:00:00Z",
-							"deleted_at": null
+							"updated_at": "2022-03-15T15:00:00Z"
 						}
 					],
 						"cursor": 100

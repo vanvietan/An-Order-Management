@@ -14,7 +14,7 @@ type CreateUserInput struct {
 	Password    string     `json:"password,omitempty"`
 	PhoneNumber string     `json:"phone_number"`
 	Address     string     `json:"address"`
-	Age         int8       `json:"age"`
+	Age         int        `json:"age"`
 	Role        model.Role `json:"role"` //Enums Role
 }
 
@@ -25,7 +25,7 @@ type AUserResponse struct {
 	Username    string          `json:"username"`
 	PhoneNumber string          `json:"phone_number"`
 	Address     string          `json:"address"`
-	Age         int8            `json:"age"`
+	Age         int             `json:"age"`
 	Role        model.Role      `json:"role"` //Enums Role
 	CreatedAt   time.Time       `json:"created_at"`
 	UpdatedAt   time.Time       `json:"updated_at"`
