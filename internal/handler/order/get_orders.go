@@ -25,8 +25,8 @@ func (h OrderHandler) GetOrders(w http.ResponseWriter, r *http.Request) {
 		common.ResponseJson(w, http.StatusInternalServerError, common.InternalCommonErrorResponse)
 		return
 	}
-
-	common.ResponseJson(w, http.StatusOK, toGetOrdersResponse(orders))
+	resp := modelToResponseArray(orders)
+	common.ResponseJson(w, http.StatusOK, toGetOrdersResponse(resp))
 }
 
 func validateAndMap(r *http.Request) (int, int64, error) {

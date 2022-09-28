@@ -5,7 +5,6 @@ import (
 	"math"
 	"net/http"
 	"order-mg/internal/handler/common"
-	"order-mg/internal/model"
 	"strconv"
 )
 
@@ -27,19 +26,8 @@ func (h UserHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
 		common.ResponseJson(w, http.StatusInternalServerError, common.InternalCommonErrorResponse)
 		return
 	}
-
-	common.ResponseJson(w, http.StatusOK, toGetUsersResponse(users))
-}
-
-func toGetUsersResponse(users []model.Users) getUsersResponse {
-	if len(users) == 0 {
-		return getUsersResponse{}
-	}
-
-	return getUsersResponse{
-		Users:  users,
-		Cursor: users[len(users)-1].Id,
-	}
+	resp := modelToResponseArray(users)
+	common.ResponseJson(w, http.StatusOK, toGetUsersResponse(resp))
 }
 
 func validateAndMap(r *http.Request) (int, int64, error) {
