@@ -4,68 +4,54 @@ version: '3.8'
 # Define services
 services:
 
-  app:
-    container_name: main
-#    env_file:
-#      - ./.env
-    depends_on:
-       - db
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-#      - "${APP_PORT}:${APP_PORT}"
-      - '8080:8080'
-#    restart: on-failure
-#    volumes:
-#      - api:/usr/src/app/
-#    networks:
-#      - backend
   #db service
-  db:
-   container_name: db
-   image: postgres:14.1-alpine
-#   restart: always
-   environment:
-     POSTGRES_USER: postgres
-     POSTGRES_PASSWORD: admin
-     POSTGRES_DB: postgres
-     DATABASE_HOST: db
-   ports:
-#     - "${DB_PORT}:${POSTGRES_PORT}"
-     - '5432:5432'
-   volumes:
-     - ./postgres-data:/var/lib/postgresql/data
-#   networks:
-#     backend:
-#       aliases:
-#         - database
-
+  # db:
+  #   container_name: db
+  #   image: postgres:14.1-alpine
+  #   restart: always
+  #   ports:
+  #     - "${DB_PORT}:${POSTGRES_PORT}"
+  #   volumes: 
+  #     - ./postgres-data:/var/lib/postgresql/data
+  #   networks:
+  #     backend:
+  #       aliases:
+  #         - database
 
   #migrate service
-#  migrate:
-#   image: migrate/migrate
-#   networks:
-#     - backend
-#   links:
-#     - db
-#   volumes:
-#     - ./data/migrations/:/migrations
-##    working_dir: /migrations
-#   command:
-#    -migrate -source file:db\migration -database postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB_NAME}?sslmode=disable up 1
-##   command:
-##     - migrate -source file:db\migration -database postgres://postgres:admin@localhost:5432/postgres?sslmode=disable up 1
-#   depends_on:
-#     - db
-#     - app
-#   restart: on-failure
+  # migrate:
+  #   image: migrate/migrate
+  #   networks:
+  #     - backend
+  #   links:
+  #     - db
+  #   volumes:
+  #     - ./data/migrations/:/migrations
+  #   # working_dir: /migrations
+  #   command: -source file:/migrations -database postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB_NAME}?sslmode=disable up 1
+  #   depends_on:
+  #     - db
+  #     - app
+    # restart: on-failure
 
   # App Service
-#
-volumes:
-   db:
+  app:
+    container_name: main
+    env_file:
+      - ./.env
+    # depends_on:
+    #   - db
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    restart: unless-stopped
+    networks:
+      - backend
+# volumes:
+#   db:
 #     driver: local
 networks:
-    backend:
-      driver: bridge
+  backend:
+    driver: bridge

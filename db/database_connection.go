@@ -15,7 +15,7 @@ const (
 	password = "admin"
 	port     = 5432
 	dbname   = "postgres"
-	host     = "db"
+	host     = "localhost"
 )
 
 func CreateDatabaseConnection() error {
