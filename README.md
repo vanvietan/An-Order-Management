@@ -18,10 +18,10 @@ This is my REST API Golang practice with a basic CRUD list of features on both U
 - PostgreSQL
 
 ## Executing Program
--to migrate the db: 
+-to migrate the db:  
 migrate -source file:db\migration -database postgres://postgres:admin@localhost:5432/postgres?sslmode=disable up 1
 
--to run the program
+-to run the program: 
 go run .\cmd\served\main.go
 
 ## Postman test
