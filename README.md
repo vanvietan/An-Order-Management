@@ -1,13 +1,13 @@
 # An-Order-Management
 Golang Practice REST API
 
-#Order-MG
+##Order-MG
 An Order Management
 
-#Description
+##Description
 This is my REST API Golang practice with a basic CRUD list of features on both User and Order. 
 
-#Technologies
+##Technologies
 - Golang 1.19
 - Gochi 
 - GORM 
@@ -17,13 +17,13 @@ This is my REST API Golang practice with a basic CRUD list of features on both U
 - Testify
 - PostgreSQL
 
-#Executing Program
+##Executing Program
 -to migrate the db: 
 migrate -source file:db\migration -database postgres://postgres:admin@localhost:5432/postgres?sslmode=disable up 1
 -to run the program
 go run .\cmd\served\main.go
 
-#Postman test
+##Postman test
 https://www.getpostman.com/collections/a09c1de3c409178f1f44
 
 ####
