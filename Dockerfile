@@ -25,7 +25,7 @@ WORKDIR /app/cmd/served/
 RUN go build -o /app/cmd/served/main
 
 # Expose port 8080 to the outside world
-EXPOSE 8080
+EXPOSE 3000
 
 # Run the executable
 CMD ["./main"]
