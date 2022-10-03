@@ -65,7 +65,7 @@ services:
 #
 volumes:
    db:
-#     driver: local
+     driver: local
 networks:
     backend:
       driver: bridge

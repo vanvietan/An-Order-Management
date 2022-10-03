@@ -857,3 +857,15 @@ vendor/github.com/jarcoal/httpmock/LICENSE
 vendor/github.com/jarcoal/httpmock/README.md
 vendor/github.com/jarcoal/httpmock/response.go
 vendor/github.com/jarcoal/httpmock/transport.go
+postgres-data/base/13756/pg_internal.init
+postgres-data/global/pg_control
+postgres-data/global/pg_internal.init
+postgres-data/pg_stat/db_0.stat
+postgres-data/pg_stat/db_13756.stat
+postgres-data/pg_stat/global.stat
+postgres-data/pg_stat_tmp/db_0.stat
+postgres-data/pg_stat_tmp/db_13756.stat
+postgres-data/pg_stat_tmp/global.stat
+postgres-data/pg_wal/000000010000000000000001
+postgres-data/postmaster.opts
+postgres-data/postmaster.pid
