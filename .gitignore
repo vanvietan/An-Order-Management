@@ -869,3 +869,4 @@ postgres-data/pg_stat_tmp/global.stat
 postgres-data/pg_wal/000000010000000000000001
 postgres-data/postmaster.opts
 postgres-data/postmaster.pid
+/postgres-data/
