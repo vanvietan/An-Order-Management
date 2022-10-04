@@ -26,7 +26,7 @@ migrate -source file:db\migration -database postgres://postgres:admin@localhost:
 go run .\cmd\served\main.go
 
 ### by docker: 
-docker-compose up
+docker-compose up db app migrate_up
 
 ## Postman test
 https://www.getpostman.com/collections/a09c1de3c409178f1f44
