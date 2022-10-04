@@ -16,6 +16,7 @@ This is my REST API Golang practice with a basic CRUD list of features on both U
 - Mockery
 - Testify
 - PostgreSQL
+- Docker
 
 ## Executing Program
 ### to migrate the db:  
